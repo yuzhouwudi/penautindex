@@ -36,10 +36,9 @@
 
 <style scoped lang="scss">
 
-
     footer{
         margin: 0 auto;
-        width:1200px;
+        width:100%;
         height:460px;
         /*background: rgba(0,0,0,0.5);*/
         display: flex;

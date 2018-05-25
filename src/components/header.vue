@@ -1,23 +1,53 @@
 <template>
     <section>
+
+      <div id="zhezhao" v-if="flag==true"></div>
+      <div id="zhezhao1" v-if="flag1==true"></div>
+
+      <div id="enter" class="animated"  ref="login">
+        <a  @click="none"><span class="iconfont icon-shachu-xue"></span></a>
+        <img src="../assets/img/song.png" alt="">
+        <div class="sin"><h1>登录</h1></div>
+        <label>账号：</label>
+        <input type="text" class="input"><br>
+        <label>密码：</label>
+        <input type="text" class="input">
+        <button class="deng">马上登录</button>
+        <p>还不是会员？<span>立马去注册！</span></p>
+      </div>
+
+      <div id="login" class="animated zoomIn" v-if="flag1==true">
+        <img src="../assets/img/song.png" alt="">
+        <div class="sin"><h1>注册</h1></div>
+        <input type="text" class="input" placeholder="请输入手机号"><br>
+        <input type="text" class="input" placeholder="短信校验码" style="width: 105px">
+        <button class="yan">获取短信校验码</button><br>
+        <input type="text" class="input" placeholder="请输入您的密码"><br>
+        <input type="text" class="input" placeholder="请再次输入您的密码">
+        <button class="deng">马上登录</button>
+      </div>
+
         <div class="top">
             <div class="left">
-                <a>登录</a>
-                <a>注册</a>
+                <a @click="login">登录</a>
+                <a @click="flag1=true">注册</a>
             </div>
+
             <div class="mid">
                 <img src="../assets/img/logo.png" alt="">
             </div>
+            <div class="right">
+              <router-link :to="item.to"  v-for="item in data ">{{item.name}}</router-link>
+              <router-link to="/car"><span class="iconfont icon-gouwuche"></span></router-link>
 
-               <div class="right">
-<router-link to=""  v-for="item in data"> {{item.name}}</router-link>
-           <span class="iconfont gouwuche"></span>
-               </div>
+              <div class="user"></div>
+              <p>name</p>
+            </div>
         </div>
         <div class="middom">
             <div class="main">
-                <router-link to=""  v-for="item in arr ">{{item.name}}</router-link>
-                <router-link to="" class="find"></router-link>
+                <router-link :to="item.to"  v-for="item in arr ">{{item.name}}</router-link>
+                <router-link to="" class="find"><span class="iconfont icon-fangdajing"></span></router-link>
             </div>
         </div>
     </section>
@@ -25,38 +55,214 @@
 
 </template>
 <script>
+    import "../assets/icon/iconfont.css"
+    import "../assets/css/animate.css"
+    import "../assets/js/jquery.min"
     export default {
         data(){
             return {
                 data:[
-                    {name:"我的订单",to:"" },
-                    {name:"我的收藏",to:"" },
-                    {name:"个人中心",to:"" },
+                  {name:"我的订单",to:"/list" },
+
                 ],
                 arr:[
-                    {name:"首页",to:"" },
-                    {name:"每周上新",to:"" },
-                    {name:"热门推销",to:"" },
-                    {name:"产品分类",to:"" },
-                    {name:"折扣分类",to:"" },
+                    {name:"首页",to:"/" },
+                    {name:"每周上新",to:"/upnew" },
+                    {name:"热门推销",to:"/hot" },
+                    {name:"产品分类",to:"/classify" },
+                    {name:"折扣专区",to:"/sale" },
 
-                ]
+                ],
+              flag:false,
+              flagz:false,
+              flag1:false,
             }
-        }
+        },
+      methods:{
+            login(){
+              this.flag=true
+              this.$refs.login.style.display='block'
+              this.$refs.login.classList.add('zoomIn')
+              this.$refs.login.classList.remove('zoomOut')
+            },
+            none(){
+              console.log(this.$refs.login);
+              this.$refs.login.classList.remove('zoomIn')
+              this.$refs.login.classList.add('zoomOut')
+              this.$refs.login.animate({
+                'display':'none'
+
+              }, 1000 );
+
+                this.flag=false
+
+              console.log(this.flag);
+            }
+      }
     }
+
 </script>
 
 <style scoped lang="scss">
+  #zhezhao{
+    width: 100%;
+    height: 100%;
+    background: rgba(227,227,241,0.8);
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 100;
+  }
+  #zhezhao1{
+    width: 100%;
+    height: 100%;
+    background: rgba(227,227,241,0.8);
+    position: fixed;
+    top:0;
+    left: 0;
+    z-index: 100;
+  }
+  #enter{
+    width: 496px;
+    height: 354px;
+    background: #f2f42a;
+    position: absolute;
+    top:30%;
+    left: 35%;
+    z-index: 300;
+    display: none;
+    a{
+      position: absolute;
+      top:-60px;
+      left: 440px;
+      font-size: 100px;
+      color: #fff;
+      span{
+        font-size: 40px;
+      }
+    }
+    img{
+      width: 330px;
+      position: absolute;
+      top:-90px;
+      left: -210px;
+    }
+    .sin{
+      width: 0;
+      height: 0;
+      border-left: 70px solid transparent;
+      border-right: 70px solid transparent;
+      border-bottom: 100px solid #f42a42;
+      position: absolute;
+      top:-100px;
+      left: 60px;
+      h1{
+        color: #fff;
+        font-size: 22px;
+        margin-top: 25px;
+        margin-left: -10px;
+      }
+    }
+    label{
+      margin-top: 50px;
+      margin-right: 10px;
+    }
+    input{
+      margin-top: 50px;
+      width: 278px;
+      height: 37px;
+      border-radius: 30px;
+      border: 1px solid #c1c0c0;
+    }
+    .deng{
+      width: 280px;
+      height: 40px;
+      background: #000;
+      border-radius: 35px;
+      margin-top: 50px;
+      margin-left: 60px;
+      color: #fff;
+      border: none;
+    }
+    p{
+      margin-top: 10px;
+      font-size: 14px;
+      color: #aaab9f;
+      margin-left: 60px;
+      span{
+        font-size: 16px;
+        color: #c5885c;
+      }
+    }
+  }
+  #login{
+    width: 496px;
+    height: 364px;
+    background: #f2f42a;
+    position: absolute;
+    top:30%;
+    left: 35%;
+    z-index: 300;
+    img{
+      width: 330px;
+      position: absolute;
+      top:-90px;
+      left: -210px;
+    }
+    .sin{
+      width: 0;
+      height: 0;
+      border-left: 70px solid transparent;
+      border-right: 70px solid transparent;
+      border-bottom: 100px solid #f42a42;
+      position: absolute;
+      top:-100px;
+      left: 60px;
+      h1{
+        color: #fff;
+        font-size: 22px;
+        margin-top: 25px;
+        margin-left: -10px;
+      }
+    }
+    input{
+      margin-top: 30px;
+      width: 278px;
+      height: 37px;
+      border-radius: 25px;
+      border: 1px solid #c1c0c0;
+      padding-left: 20px;
+    }
+    .yan{
+      width: 168px;
+      height: 37px;
+      background: #d6d6d6;
+      border-radius: 25px;
+      border: none;
+      margin-top: 25px;
+      color: #000;
+      border: 1px solid #c1c0c0;
+    }
+    .deng{
+      width: 300px;
+      height: 40px;
+      background: #000;
+      border-radius: 35px;
+      margin-top: 25px;
+      color: #fff;
+      border: none;
+    }
+  }
 .top{
     width:1200px;
     height:115px;
-    /*background: #aacdef;*/
     position: relative;
     margin:0 auto;
+  overflow: hidden;
 .left{
     position: absolute;
-    left: 157px;
-    top:30px;
+    left: 257px;
+    top:35px;
     width:156px;
     height:23px;
     display: flex;
@@ -75,7 +281,9 @@
         background: #ffff00;
         color: #000;
     }
+
  }
+
     .mid{
         width:100px;
         height:88px;
@@ -97,14 +305,37 @@
         padding-left: 58px;
         align-items: center;
         position: absolute;
-        right: 0;
+        right: 15px;
         top: 0;
+
         a{
             display: block;
             font-size: 15px;
             color: #9f8f8f;
-            margin-right: 12px;
+            margin-right: 30px;
+          span{
+            font-size: 25px;
+            color: #8A7A7A;
+          }
         }
+      p{
+        font-size: 25px;
+      }
+      .user{
+        width: 50px;
+        height: 50px;
+        background: pink;
+        border-radius: 50%;
+        margin-left: 30px;
+      }
+      p{
+        color: #000;
+        font-size: 22px;
+        font-weight: 200;
+        margin-left: 30px;
+      }
+
+
     }
 }
     .middom{
