@@ -18,9 +18,9 @@
         <div class="right">
             <div class="topset"> CONTACT US
             </div>
-            <input type="text">
-            <input type="text">
-            <input type="text">
+            <input type="text" placeholder="NAME" style="padding-left: 15px">
+            <input type="text" placeholder="E-MAIL" style="padding-left: 15px">
+            <input type="text" placeholder="YOUR MESSAGE" style="padding-left: 15px">
             <button class="send">SEND</button>
         </div>
         </div>
@@ -58,7 +58,7 @@
             height: 100%;
             box-sizing: border-box;
             padding: 136px 0;
-            margin-left: 100px;
+            margin-left: 120px;
            span{
                display: block;
                font-size: 18px;
@@ -97,17 +97,20 @@
                   text-align: left;
                   padding: 0 8px;
                   box-sizing: border-box;
+                  margin-left: 90px;
+                  margin-top: 28px;
                   .topset{
                       color: #fff;
                       height: 100px;
                       line-height: 100px;
                   }
                 input{
-                    height:48px;
-                    width:396px;
+                    height:45px;
+                    width:416px;
                     border: 2px solid #fff;
                     background: none;
                     margin-bottom: 18px;
+                    color: #fff;
                 }
                   .send{
                       display: block;
@@ -118,7 +121,8 @@
                       line-height: 38px;
                       font-size: 20px;
                       color: #2e2e2e;
-                      float: right;
+                      margin-left: 305px;
+                      border-radius: 5px;
                   }
               }
 

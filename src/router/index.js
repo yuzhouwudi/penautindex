@@ -6,7 +6,7 @@ import New from '@/components/new'
 import Upnew from '@/components/upnew'
 import Hot from '@/components/hot'
 import Classify from '@/components/classify'
-import Sale from '@/components/sale'
+import Discount from '@/components/discount'
 import List from '@/components/list'
 import Car from '@/components/car'
 
@@ -36,8 +36,8 @@ export default new Router({
           component: Classify,
       },
       {
-          path: '/sale',
-          component: Sale,
+          path: '/discount',
+          component: Discount,
       },
       {
           path: '/list',

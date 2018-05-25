@@ -4,7 +4,7 @@
       <img src="../assets/img/2.png" alt="">
     </div>
     <div class="size">
-      <p>首页&nbsp;/&nbsp;每周上新</p>
+      <p>首页&nbsp;/&nbsp;折扣专区</p>
     </div>
     <div class="content">
       <div class="right">
@@ -20,18 +20,19 @@
         </div>
         <div class="right-content">
           <ul>
-
             <li v-for="item in data" :key="item.id">
               <div class="content-img">
                 <div class="tupian">
                   <router-link :to="'/new?id='+item.id">
-                    <img :src="item.img[0].url" alt="">
+                     <img :src="item.img[0].url" alt="">
                   </router-link>
                 </div>
+
                 <span>Papyrus nut</span>
                 <span></span>
                 <p>{{item.name}}</p>
                 <h6>RMB<span>{{item.price}}</span></h6>
+                <h5>RMB:110</h5>
                 <div class="xiaoguo">
                   <router-link to="">
                     <div class="go">购买</div>
@@ -42,8 +43,6 @@
                 </div>
               </div>
             </li>
-
-
           </ul>
           <div class="fen">
             <div class="block">
@@ -60,6 +59,7 @@
         </div>
       </div>
     </div>
+
 
     <div class="tou">
       <div class="pic">
@@ -103,7 +103,7 @@
     name: "commodity",
     data() {
       return {
-        data: [],
+          data:[],
         currentPage1: 5,
         currentPage2: 5,
         currentPage3: 5,
@@ -112,127 +112,134 @@
     },
     methods: {
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+//        console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+//        console.log(`当前页: ${val}`);
       }
     },
 
     created(){
-      this.$http.get('/api/index/new/hot').then(res => {
-        let hot = []
-        res.body.forEach(val => {
-          let aa = JSON.parse(val)
-          aa.img = JSON.parse(aa.img)
-          hot.push(aa)
-        })
-        this.data = hot
+      this.$http.get('/api/index/discount/discount').then(res => {
+        let hot=[];
+        res.body.forEach(val=>{
+          let aa=JSON.parse(val);
+          aa.img=JSON.parse(aa.img);
+          hot.push(aa);
+        });
+        this.data=hot;
 //        console.log(hot);
       })
     }
+
   }
 </script>
 
 <style scoped lang="scss">
-  .container {
+  .container{
     width: 1200px;
     height: auto;
     margin: 0 auto;
-    .top-img {
+    .top-img{
       width: 100%;
       height: auto;
     }
-    .size {
+    .size{
       width: 100%;
       height: 75px;
-      p {
+      p{
         font-size: 16px;
-        padding-top: 20px;
+        padding-top:20px;
         text-align: left;
         color: #737373;
       }
     }
-    .content {
+    .content{
       width: 100%;
       height: auto;
-      .right {
+      .right{
         width: 1200px;
         height: auto;
         margin: 0 auto;
-        .top-jia {
+        .top-jia{
           width: 100%;
           height: 40px;
           text-align: left;
           line-height: 40px;
-          select {
+          select{
             border-radius: 50px;
             width: 150px;
-            margin-left: 30px;
-            outline: none;
-            option {
+            margin-left: 30px;                                 outline: none;
+            option{
               font-size: 16px;
             }
           }
-          span {
+          span{
             margin-left: 40px;
           }
         }
-        .right-content {
+        .right-content{
           width: 100%;
           height: auto;
-          ul {
+          ul{
             width: 100%;
             height: 100%;
             overflow: hidden;
-            li {
+            li{
               width: 246px;
               height: 305px;
               float: left;
               box-shadow: 1px 1px 3px 2px rgba(216, 216, 216, 0.4);
               margin-top: 30px;
               margin-right: 54px;
-              .tupian {
+              .tupian{
                 width: 175px;
                 height: 125px;
                 background: #fff;
                 margin: 20px auto 0;
-                img {
+                img{
                   height: 100%;
                 }
               }
-              span:nth-child(2) {
+              span:nth-child(2){
                 display: block;
                 width: 100%;
                 height: 30px;
-                font-size: 19px
+                font-size:19px
               }
-              span:nth-child(3) {
+              span:nth-child(3){
                 display: block;
                 width: 120px;
                 height: 2px;
                 background: yellow;
                 margin-left: 60px;
               }
-              p {
+              p{
                 width: 100%;
                 height: 30px;
                 font-size: 17px;
                 line-height: 30px;
               }
-              h6 {
+              h6{
                 text-align: left;
                 font-size: 16px;
                 color: #4f4e44;
                 margin-top: 10px;
-                margin-left: 70px;
-                span {
+                margin-left: 30px;
+                span{
                   font-size: 20px;
                   margin-left: 10px;
                   color: #c30827;
                 }
               }
-              .xiaoguo {
+              h5{
+                font-size: 14px;
+                color: #999091;
+                margin-left: 100px;
+                margin-top: -20px;
+                text-decoration: line-through
+              }
+              .xiaoguo{
                 width: 100px;
                 height: 20px;
                 border: yellow 1px solid;
@@ -241,14 +248,14 @@
                 margin-left: 70px;
                 margin-top: 10px;
                 display: none;
-                .go {
+                .go{
                   width: 50%;
                   height: 100%;
                   background: yellow;
                   font-size: 14px;
                   float: left;
                 }
-                .shou {
+                .shou{
                   width: 50%;
                   height: 100%;
                   /*background: yellow;*/
@@ -256,17 +263,17 @@
                   float: left;
                 }
               }
-              &:hover .xiaoguo {
+              &:hover .xiaoguo{
                 display: block;
                 transition: 20s;
               }
             }
           }
-          .fen {
+          .fen{
             width: 100%;
             height: 200px;
             float: left;
-            .block {
+            .block{
               margin-top: 60px;
             }
           }
@@ -274,21 +281,22 @@
       }
     }
 
-    .tou {
+
+    .tou{
       width: 1200px;
       height: 150px;
       margin: 100px auto 0;
       position: relative;
-      .pic {
+      .pic{
         width: 251px;
         margin: 0 auto;
         position: relative;
-        img {
+        img{
           width: 100%;
         }
-        h1 {
+        h1{
           position: absolute;
-          top: 144px;
+          top:144px;
           left: 124px;
           color: #fff;
           font-size: 20px;
@@ -296,42 +304,44 @@
       }
     }
 
-    .nuts {
+    .nuts{
       width: 1200px;
       height: auto;
       margin: 100px auto 50px;
       display: flex;
-      li {
-        width: calc(100% / 4);
+      li{
+        width: calc(100%/4);
         height: 437px;
-        img {
+        img{
           width: 100%;
         }
-        h1 {
+        h1{
           font-size: 20px;
           color: #393535;
         }
-        p {
+        p{
           font-size: 18px;
           color: #787070;
         }
-        h2 {
+        h2{
           margin-top: 10px;
           font-size: 22px;
           color: #c30827;
-          span {
+          span{
             font-size: 16px;
             color: #000;
             margin-left: 10px;
           }
         }
       }
-      li:hover {
+      li:hover{
         transform: translateY(-10px);
-        box-shadow: 0 10px 10px 10px rgba(217, 217, 217, 0.5);
+        box-shadow: 0 10px 10px 10px rgba(217,217,217,0.5);
         transition: 0.5s;
       }
     }
+
+
 
   }
 

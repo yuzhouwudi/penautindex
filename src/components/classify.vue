@@ -13,10 +13,9 @@
         </div>
         <ul class="left-content">
           <span>产品分类 Product classification</span>
-          <li>轻松好事</li>
-          <li>酥脆坚果</li>
-          <li>旅行专供</li>
-          <li>果脯好牌</li>
+          <li v-for="(item,index) in arr" :key="item.id" @click="show(item.id);active=index" :class="{active:index==active}">
+            {{item.name}}
+          </li>
         </ul>
 
 
@@ -34,13 +33,18 @@
         </div>
         <div class="right-content">
           <ul>
-            <li>
+            <li v-for="item in data" :key="item.id">
               <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
+                <div class="tupian">
+                  <router-link :to="'/new?id='+item.id">
+                     <img :src="item.img[0].url" alt="">
+                  </router-link>
+                </div>
+
                 <span>Papyrus nut</span>
                 <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
+                <p>{{item.name}}</p>
+                <h6>RMB<span>{{item.price}}</span></h6>
                 <div class="xiaoguo">
                   <router-link to="">
                     <div class="go">购买</div>
@@ -51,194 +55,10 @@
                 </div>
               </div>
             </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
-            <li>
-              <div class="content-img">
-                <img src="../assets/img/x_11.png" alt="">
-                <span>Papyrus nut</span>
-                <span></span>
-                <p>巴旦木坚果</p>
-                <h6>RMB<span>66</span></h6>
-                <div class="xiaoguo">
-                  <router-link to="">
-                    <div class="go">购买</div>
-                  </router-link>
-                  <router-link to="">
-                    <div class="shou">收藏</div>
-                  </router-link>
-                </div>
-              </div>
-            </li>
+
           </ul>
+
+
           <div class="fen">
             <div class="block">
               <el-pagination
@@ -297,6 +117,9 @@
     name: "classify",
     data() {
       return {
+        data:[],
+        arr:[],
+        active:0,
         currentPage1: 5,
         currentPage2: 5,
         currentPage3: 5,
@@ -305,12 +128,36 @@
     },
     methods: {
       handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
+//        console.log(`每页 ${val} 条`);
       },
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+//        console.log(`当前页: ${val}`);
+      },
+
+      show(id){
+        this.$http.get('/api/index/classify/show?id='+id).then(res => {
+          res.body.forEach(val=>val.img=JSON.parse(val.img))
+          this.data=res.body
+//        console.log(res);
+        })
       }
     },
+
+
+    created(){
+      this.$http.get('/api/index/classify/show?id=1').then(res => {
+        res.body.forEach(val=>val.img=JSON.parse(val.img))
+        this.data=res.body
+//        console.log(res);
+      })
+
+      this.$http.get('/api/index/classify/list').then(res => {
+//        res.body.forEach(val=>val.img=JSON.parse(val.img))
+        this.arr=res.body
+//        console.log(res);
+      })
+
+    }
   }
 </script>
 
@@ -364,7 +211,7 @@
             font-size: 20px;
             line-height: 50px;
           }
-          li:hover{
+          li.active{
             background: #F8F986;
           }
         }
@@ -403,22 +250,32 @@
               box-shadow: 1px 1px 3px 2px rgba(216, 216, 216, 0.4);
               margin-top: 30px;
               margin-right: 54px;
-              .content-img{
-                width: 200px;
-                margin-left: 21px;
+              .tupian{
+                width: 175px;
+                height: 125px;
+                background: #fff;
+                margin: 20px auto 0;
+                img{
+                  height: 100%;
+                }
               }
+              /*.content-img{*/
+                /*width: 200px;*/
+                /*margin-left: 21px;*/
+              /*}*/
               span:nth-child(2){
                 display: block;
                 width: 100%;
                 height: 30px;
-                font-size:19px
+                font-size:19px;
+                margin-top: 10px;
               }
               span:nth-child(3){
                 display: block;
                 width: 120px;
                 height: 2px;
                 background: yellow;
-                margin-left: 40px;
+                margin-left: 60px;
               }
               p{
                 width: 100%;
@@ -431,7 +288,8 @@
                 font-size: 16px;
                 color: #4f4e44;
                 margin-top: 8px;
-                margin-left: 62px;
+                margin-left: 70px;
+
                 span{
                   font-size: 20px;
                   margin-left: 10px;
@@ -444,7 +302,7 @@
                 border: yellow 1px solid;
                 border-radius: 50px;
                 overflow: hidden;
-                margin-left: 50px;
+                margin-left: 70px;
                 margin-top: 10px;
                 display: none;
                 .go{

@@ -5,38 +5,38 @@
         <div class="mianbao">
             <router-link to="">首页</router-link>
             <span>/</span>
-            <router-link to="">新品</router-link>
+            <router-link to="">产品详情</router-link>
         </div>
         <div class="img">
             <img src="../assets/img/3_03.png" alt="">
         </div>
         <div class="detail">
              <div class="left">
-                 <div>
-                     <img src="../assets/img/l1.png" alt="">
+                 <div class="tu1">
+                     <img :src="img2.url" alt="">
                  </div>
-                 <div>
-                     <img src="../assets/img/l2.png" alt="">
+                 <div class="tu2">
+                     <img :src="img3.url" alt="">
                  </div>
              </div>
             <div class="mid">
-                <img src="../assets/img/m1.png" alt="">
+              <div class="tupian">
+                <img :src="img.url" alt="">
+              </div>
+
             </div>
           <div class="right">
 
-              <div class="righttop">
-                 <div class="top1"> 【官网】每一颗坚果</div>
+              <div class="righttop" >
+                 <div class="top1"> 【官网】{{data.name}}</div>
                   <div class="top2">
-                      <p>自然馈赠/健康之选</p>
-                      <a href=""> 去刮券
-                       <div > ></div>
-                      </a>
+                      <p>{{data.des}}</p>
                   </div>
 
                   <div class="top3">
-                     50.00 <span>RMB</span>
+                    {{data.price}} <span>RMB</span>
                   </div>
-                  <div class="top4">本店慢99包邮</div>
+                  <div class="top4">本店99包邮</div>
                   <div class="top5">
                       <div class="top51">
                       月销量： <span>19087</span>
@@ -49,7 +49,7 @@
               </div>
               <div class="rightbot">
                  <div class="a">
-  <span> 请选择商品数量</span>
+                     <span> 请选择商品数量</span>
                      <button @click="count--">-</button>
                       <div>  {{count}}  </div>
                      <button @click="count++">+</button>
@@ -89,8 +89,6 @@
             <img src="../assets/img/333.png" alt="">
         </div>
 
-
-
         <div class="img">
             <img src="../assets/img/3_03.png" alt="">
         </div>
@@ -101,56 +99,49 @@
         <div class="iimg">
             <img src="../assets/img/3_03.png" alt="">
         </div>
-        <ul class="bottom">
-             <li>
-              
-<div class="imgtop">
-    <img src="../assets/img/555_11.png" alt="">
-</div>
-     <div class="imgbot">
-  <span> 奶油腰果</span>
- <p>双重美味浓醇奶香</p>
-<div>
-    <div> 66<span>RMB </span></div>
-    <button> BUY</button>
-</div>
 
-     </div>
 
-             </li>
-            <li>
-
-                <div class="imgtop">
-                    <img src="../assets/img/555_11.png" alt="">
-                </div>
-                <div class="imgbot">
-                    <span> 奶油腰果</span>
-                    <p>双重美味浓醇奶香</p>
-                    <div>
-                        <div> 66<span>RMB </span></div>
-                        <button> BUY</button>
-                    </div>
-
-                </div>
-
-            </li>
-            <li>
-
-                <div class="imgtop">
-                    <img src="../assets/img/555_11.png" alt="">
-                </div>
-                <div class="imgbot">
-                    <span> 奶油腰果</span>
-                    <p>双重美味浓醇奶香</p>
-                    <div>
-                        <div> 66<span>RMB </span></div>
-                        <button> BUY</button>
-                    </div>
-
-                </div>
-
-            </li>
-        </ul>
+      <ul class="bottom">
+        <li>
+          <div class="imgtop">
+            <img src="../assets/img/555_11.png" alt="">
+          </div>
+          <div class="imgbot">
+            <span> 奶油腰果</span>
+            <p>双重美味浓醇奶香</p>
+            <div>
+              <div> 66<span>RMB </span></div>
+              <button> BUY</button>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="imgtop">
+            <img src="../assets/img/555_11.png" alt="">
+          </div>
+          <div class="imgbot">
+            <span> 奶油腰果</span>
+            <p>双重美味浓醇奶香</p>
+            <div>
+              <div> 66<span>RMB </span></div>
+              <button> BUY</button>
+            </div>
+          </div>
+        </li>
+        <li>
+          <div class="imgtop">
+            <img src="../assets/img/555_11.png" alt="">
+          </div>
+          <div class="imgbot">
+            <span> 奶油腰果</span>
+            <p>双重美味浓醇奶香</p>
+            <div>
+              <div> 66<span>RMB </span></div>
+              <button> BUY</button>
+            </div>
+          </div>
+        </li>
+      </ul>
 
     </div>
 
@@ -160,14 +151,33 @@
     export default {
         data(){
             return {
-               count:6
+               count:6,
+              data:'',
+              img:{},
+              img2:{},
+              img3:{}
             }
-        }
+        },
+
+      created(){
+            let id=this.$route.query.id
+        this.$http.get('/api/index/hot/new?id='+id).then(res => {
+//          console.log(res);
+          let aa=res.body [0]
+          aa.img=JSON.parse(aa.img)
+          this.img=aa.img[0]
+          this.img2=aa.img[1]
+          this.img3=aa.img[2]
+          this.data = aa
+        })
+
+
+      }
+
     }
 </script>
 
 <style scoped lang="scss">
-
     .max{
         margin: 0 auto;
         width:1200px;
@@ -198,7 +208,7 @@
         .img{
            width: 250px;
             height:80px;
-            margin: 0 auto;
+            margin: 0 auto 50px;
             overflow: hidden;
             img{
             width: 100%;
@@ -218,25 +228,40 @@
         margin-left: 94px;
         height:100%;
         width:102px;
-        div{
-            /*width:100px;*/
-            /*height: 100px;*/
-            /*border: 1px solid #ccc;*/
-            margin-bottom: 51px;
-            overflow: hidden;
-           img{
-               width:100%;
-           }
+        .tu1{
+          width: 100px;
+          height: 100px;
+          margin-top: 30px;
+          margin-bottom: 30px;
+          padding: 10px;
+          img{
+            width: 100%;
+          }
         }
+      .tu2{
+        width: 100px;
+        height: 100px;
+        border: 1px solid #000;
+        padding: 10px;
+        img{
+          width: 100%;
+        }
+      }
     }
     .mid{
         width:436px;
-        height:100%;
+        height:225px;
         margin-left: 43px;
+      .tupian{
+        width: 336px;
+        height: 225px;
+        margin: 0 auto;
+        background: #fff;
         img{
-            width:100%;
-            overflow: hidden;
+          width: 100%;
         }
+      }
+
     }
     .right{
         height:400px;
@@ -260,7 +285,8 @@
                    font-size: 14px;
                     color: #c9c7c7;
                     margin-left: 15px;
-
+                   margin-top: 20px;
+                  text-align: left;
                 }
                 a{
                     color: #ee3030;
@@ -414,70 +440,74 @@
             width: 250px;
             height:80px;
             overflow: hidden;
+          margin-bottom: 30px;
         }
-        ul{
-            width:100%;
-            height:480px;
-            display: flex;
-            margin-bottom: 67px;
-            li{
-                flex-grow: 1;
-                height:100%;
-                overflow: hidden;
-                & li:hover{
+
+      ul{
+        width:1200px;
+        height:480px;
+        display: flex;
+        margin: 0 auto 67px;
+        li{
+          flex-grow: 1;
+          height:100%;
+          overflow: hidden;
+          & li:hover{
             box-shadow: 0 0 10px 10px rgba(0 ,0,0,0.7);
-                }
-                .imgtop{
-                    width: 100%;
-                    height:339px;
-
-                }
-                .imgbot{
-                    width:100%;
-                    height:auto;
-                    box-sizing: border-box;
-                    padding: 0 80px;
-                    text-align: left;
-                    span{
-                        font-size: 18px;
-                        color: #000;
-                        font-weight: bold;
-
-                    }
-                    p{
-                        font-size: 15px;
-                        margin-top: 10px;
-                        color: #a09b9b;
-                    }
-                    div{
-                        margin-top: 10px;
-                        display: flex;
-                        div{
-                            font-size: 20px;
-                            color: #c30827;
-                            margin-right: 100px;
-                            span{
-                                font-size: 12px;
-                                color: #363633;
-                                line-height: 30px;
-                                margin-left: 8px;
-
-                            }
-
-                        }
-                        button{
-                            margin-top: 10px;
-                            width:61px;
-                            height:25px;
-                            background: #0b0806;
-                            border-radius: 13px;
-                            font-size: 12px;
-                            color: #fff;
-                        }
-                    }
-                }
+          }
+          .imgtop{
+            width: 100%;
+            height:339px;
+          }
+          .imgbot{
+            width:100%;
+            height:auto;
+            box-sizing: border-box;
+            padding: 0 80px;
+            text-align: left;
+            span{
+              font-size: 18px;
+              color: #000;
+              font-weight: bold;
             }
+            p{
+              font-size: 15px;
+              margin-top: 10px;
+              color: #a09b9b;
+            }
+            div{
+              margin-top: 10px;
+              display: flex;
+              div{
+                font-size: 20px;
+                color: #c30827;
+                margin-right: 100px;
+                span{
+                  font-size: 12px;
+                  color: #363633;
+                  line-height: 30px;
+                  margin-left: 8px;
+                }
+              }
+              button{
+                margin-top: 10px;
+                width:61px;
+                height:25px;
+                background: #0b0806;
+                border-radius: 13px;
+                font-size: 12px;
+                color: #fff;
+                border: none;
+              }
+            }
+          }
         }
+        li:hover{
+          transform: translateY(-10px);
+          box-shadow: 0 10px 10px 10px rgba(217,217,217,0.5);
+          transition: 0.5s;
+        }
+      }
 
 }
 
