@@ -9,9 +9,9 @@
       <img src="../assets/img/song.png" alt="">
       <div class="sin"><h1>登录</h1></div>
       <label>账号：</label>
-      <input type="text" class="input"><br>
+      <input type="text" class="input" placeholder="请输入手机号"><br>
       <label>密码：</label>
-      <input type="text" class="input">
+      <input type="text" class="input" placeholder="请输入您的密码">
       <button class="deng">马上登录</button>
       <p>还不是会员？<span>立马去注册！</span></p>
     </div>
@@ -44,8 +44,11 @@
 
         <router-link to="/car"><span class="iconfont icon-gouwuche"></span></router-link>
 
-        <div class="user"></div>
-        <p>name</p>
+        <div class="user">
+          <span v-if="!user">?</span>
+          <img src="" alt="" v-if="user">
+        </div>
+        <p>未登录</p>
       </div>
     </div>
 
@@ -70,7 +73,7 @@
     data(){
       return {
         data: [
-          {name: "我的订单", to: "/list"},
+          {name: "个人中心", to: "/list"},
 
         ],
         arr: [
@@ -84,7 +87,8 @@
         active: 0,
 
         flag: false,
-        flag1: false,
+        user: false
+
       }
     },
 
@@ -128,14 +132,12 @@
         this.$refs.login.classList.remove('zoomOut')
       },
       none(){
-//              console.log(this.$refs.login);
         this.$refs.login.classList.remove('zoomIn')
         this.$refs.login.classList.add('zoomOut')
         setTimeout(()=>{
           this.$refs.login.style.display = 'none'
         },200)
         this.flag = false
-//              console.log(this.flag);
       },
 
       zhu(){
@@ -145,14 +147,12 @@
         this.$refs.zhu.classList.remove('zoomOut')
       },
       nono(){
-//        console.log(this.$refs.zhu);
         this.$refs.zhu.classList.remove('zoomIn')
         this.$refs.zhu.classList.add('zoomOut')
         setTimeout(()=>{
           this.$refs.zhu.style.display = 'none'
         },200)
         this.flag = false
-//              console.log(this.flag);
       }
     }
   }
@@ -192,10 +192,10 @@
       }
     }
     img {
-      width: 330px;
+      width: 300px;
       position: absolute;
-      top: -90px;
-      left: -210px;
+      top: -70px;
+      left: -180px;
     }
     .sin {
       width: 0;
@@ -270,10 +270,10 @@
       }
     }
     img {
-      width: 330px;
+      width: 300px;
       position: absolute;
-      top: -90px;
-      left: -210px;
+      top: -70px;
+      left: -180px;
     }
     .sin {
       width: 0;
@@ -394,15 +394,24 @@
       .user {
         width: 50px;
         height: 50px;
-        background: pink;
+        background: #f0f0f0;
         border-radius: 50%;
         margin-left: 30px;
+        line-height: 50px;
+        span{
+          font-size: 22px;
+          color: #f7f7f7;
+          font-weight: 700;
+        }
+        img{
+          width: 100%;
+        }
       }
       p {
         color: #000;
-        font-size: 22px;
+        font-size: 16px;
         font-weight: 200;
-        margin-left: 30px;
+        margin-left: 20px;
       }
 
     }
@@ -415,15 +424,14 @@
     .main {
       margin: 0 auto;
       height: 100%;
-      width: 1200px;
+      width: 900px;
       box-sizing: border-box;
-      padding: 0 163px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       position: relative;
       .slide {
-        width: 4px;
+        width: 33px;
         height: 2px;
         background: #000;
         position: absolute;;

@@ -13,7 +13,8 @@
         </div>
         <ul class="left-content">
           <span>产品分类 Product classification</span>
-          <li v-for="(item,index) in arr" :key="item.id" @click="show(item.id);active=index" :class="{active:index==active}">
+          <li v-for="(item,index) in arr" :key="item.id" @click="show(item.id);active=index"
+              :class="{active:index==active}">
             {{item.name}}
           </li>
         </ul>
@@ -21,15 +22,33 @@
 
       </div>
       <div class="right">
+
         <div class="top-jia">
           按照价格
-          <select name="">
-            <option value="">倒序</option>
-          </select>
-          <span>按照种类</span>
-          <select name="">
-            <option value="">倒序</option>
-          </select>
+          <div class="select">
+            <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link" style="margin-left: 10px">
+              排序方式<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="a">倒序</el-dropdown-item>
+                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+          <span>按照销量</span>
+          <div class="select">
+            <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link" style="margin-left: 10px">
+              排序方式<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="a">倒序</el-dropdown-item>
+                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+
         </div>
         <div class="right-content">
           <ul>
@@ -37,7 +56,7 @@
               <div class="content-img">
                 <div class="tupian">
                   <router-link :to="'/new?id='+item.id">
-                     <img :src="item.img[0].url" alt="">
+                    <img :src="item.img[0].url" alt="">
                   </router-link>
                 </div>
 
@@ -117,9 +136,9 @@
     name: "classify",
     data() {
       return {
-        data:[],
-        arr:[],
-        active:0,
+        data: [],
+        arr: [],
+        active: 0,
         currentPage1: 5,
         currentPage2: 5,
         currentPage3: 5,
@@ -135,25 +154,30 @@
       },
 
       show(id){
-        this.$http.get('/api/index/classify/show?id='+id).then(res => {
-          res.body.forEach(val=>val.img=JSON.parse(val.img))
-          this.data=res.body
+        this.$http.get('/api/index/classify/show?id=' + id).then(res => {
+          res.body.forEach(val => val.img = JSON.parse(val.img))
+          this.data = res.body
 //        console.log(res);
         })
+      },
+
+      handleCommand(command) {
+        this.$message('click on item ' + command);
       }
+
     },
 
 
     created(){
       this.$http.get('/api/index/classify/show?id=1').then(res => {
-        res.body.forEach(val=>val.img=JSON.parse(val.img))
-        this.data=res.body
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.data = res.body
 //        console.log(res);
       })
 
       this.$http.get('/api/index/classify/list').then(res => {
 //        res.body.forEach(val=>val.img=JSON.parse(val.img))
-        this.arr=res.body
+        this.arr = res.body
 //        console.log(res);
       })
 
@@ -162,42 +186,43 @@
 </script>
 
 <style scoped lang="scss">
-  .container{
+
+  .container {
     width: 1200px;
     height: auto;
     margin: 0 auto;
-    .top-img{
+    .top-img {
       width: 100%;
       height: auto;
     }
-    .size{
+    .size {
       width: 100%;
       height: 75px;
-      p{
+      p {
         font-size: 16px;
-        padding-top:20px;
+        padding-top: 20px;
         text-align: left;
         color: #737373;
       }
     }
-    .content{
+    .content {
       width: 100%;
       height: 1580px;
-      .left{
+      .left {
         width: 252px;
         height: 350px;
         border: 1px #8f82bc solid;
         float: left;
-        .left-img{
+        .left-img {
           width: 100%;
           height: 61px;
-          border-bottom:  1px yellow solid;
+          border-bottom: 1px yellow solid;
         }
-        .left-content{
+        .left-content {
           width: 100%;
           height: auto;
           margin-top: 15px;
-          span{
+          span {
             display: block;
             width: 100%;
             height: 30px;
@@ -205,98 +230,106 @@
             line-height: 30px;
             margin-bottom: 20px;
           }
-          li{
+          li {
             width: 100%;
             height: 50px;
-            font-size: 20px;
+            font-size: 18px;
+            font-weight: 600;
             line-height: 50px;
+            cursor: pointer;
           }
-          li.active{
+          li.active {
             background: #F8F986;
           }
         }
       }
-      .right{
+      .right {
         width: 900px;
         height: auto;
         float: right;
-        .top-jia{
+        .top-jia {
           width: 100%;
-          height: 40px;
+          height: 25px;
           text-align: left;
-          line-height: 40px;
-          select{
+          line-height: 25px;
+          display: flex;
+          .select {
             border-radius: 50px;
-            width: 150px;
-            margin-left: 30px;                                 outline: none;
-            option{
-              font-size: 16px;
+            width: 100px;
+            font-size: 12px;
+            margin-left: 30px;
+            border: 1px solid #000;
+            .el-dropdown-link {
+              cursor: pointer;
+              font-size: 15px;
             }
           }
-          span{
+          span {
             margin-left: 40px;
           }
         }
-        .right-content{
+        .right-content {
           width: 100%;
           height: auto;
-          ul{
+          ul {
             width: 100%;
             height: 100%;
-            li{
+            display: flex;
+            flex-wrap: wrap;
+            li {
               width: 246px;
               height: 305px;
-              float: left;
               box-shadow: 1px 1px 3px 2px rgba(216, 216, 216, 0.4);
               margin-top: 30px;
               margin-right: 54px;
-              .tupian{
+
+              .tupian {
                 width: 175px;
                 height: 125px;
                 background: #fff;
                 margin: 20px auto 0;
-                img{
+                img {
                   height: 100%;
                 }
               }
               /*.content-img{*/
-                /*width: 200px;*/
-                /*margin-left: 21px;*/
+              /*width: 200px;*/
+              /*margin-left: 21px;*/
               /*}*/
-              span:nth-child(2){
+              span:nth-child(2) {
                 display: block;
                 width: 100%;
                 height: 30px;
-                font-size:19px;
+                font-size: 19px;
                 margin-top: 10px;
               }
-              span:nth-child(3){
+              span:nth-child(3) {
                 display: block;
                 width: 120px;
                 height: 2px;
                 background: yellow;
                 margin-left: 60px;
               }
-              p{
+              p {
                 width: 100%;
                 height: 30px;
                 font-size: 17px;
                 line-height: 30px;
               }
-              h6{
+              h6 {
                 text-align: left;
                 font-size: 16px;
                 color: #4f4e44;
                 margin-top: 8px;
                 margin-left: 70px;
 
-                span{
+                span {
                   font-size: 20px;
                   margin-left: 10px;
                   color: #c30827;
                 }
               }
-              .xiaoguo{
+              .xiaoguo {
                 width: 100px;
                 height: 20px;
                 border: yellow 1px solid;
@@ -304,15 +337,15 @@
                 overflow: hidden;
                 margin-left: 70px;
                 margin-top: 10px;
-                display: none;
-                .go{
+                opacity: 0;
+                .go {
                   width: 50%;
                   height: 100%;
                   background: yellow;
                   font-size: 14px;
                   float: left;
                 }
-                .shou{
+                .shou {
                   width: 50%;
                   height: 100%;
                   /*background: yellow;*/
@@ -320,17 +353,22 @@
                   float: left;
                 }
               }
-              &:hover .xiaoguo{
-                display: block;
-                transition: 20s;
+              &:hover .xiaoguo {
+                opacity: 1;
+                transition: 1s;
               }
             }
+            li:hover {
+              transform: translateY(-10px);
+              box-shadow: 0 10px 10px 10px rgba(217, 217, 217, 0.5);
+              transition: 0.5s;
+            }
           }
-          .fen{
+          .fen {
             width: 100%;
             height: 200px;
             float: left;
-            .block{
+            .block {
               margin-top: 60px;
             }
           }
@@ -338,21 +376,21 @@
       }
     }
 
-    .tou{
+    .tou {
       width: 1200px;
       height: 150px;
       margin: 0 auto;
       position: relative;
-      .pic{
+      .pic {
         width: 251px;
         margin: 0 auto;
         position: relative;
-        img{
+        img {
           width: 100%;
         }
-        h1{
+        h1 {
           position: absolute;
-          top:44px;
+          top: 44px;
           left: 124px;
           color: #fff;
           font-size: 20px;
@@ -360,39 +398,39 @@
       }
     }
 
-    .nuts{
+    .nuts {
       width: 1200px;
       height: auto;
       margin: 0 auto 50px;
       display: flex;
-      li{
-        width: calc(100%/4);
+      li {
+        width: calc(100% / 4);
         height: 437px;
-        img{
+        img {
           width: 100%;
         }
-        h1{
+        h1 {
           font-size: 20px;
           color: #393535;
         }
-        p{
+        p {
           font-size: 18px;
           color: #787070;
         }
-        h2{
+        h2 {
           margin-top: 10px;
           font-size: 22px;
           color: #c30827;
-          span{
+          span {
             font-size: 16px;
             color: #000;
             margin-left: 10px;
           }
         }
       }
-      li:hover{
+      li:hover {
         transform: translateY(-10px);
-        box-shadow: 0 10px 10px 10px rgba(217,217,217,0.5);
+        box-shadow: 0 10px 10px 10px rgba(217, 217, 217, 0.5);
         transition: 0.5s;
       }
     }

@@ -10,13 +10,30 @@
       <div class="right">
         <div class="top-jia">
           按照价格
-          <select name="">
-            <option value="">倒序</option>
-          </select>
-          <span>按照种类</span>
-          <select name="">
-            <option value="">倒序</option>
-          </select>
+          <div class="select">
+            <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link" style="margin-left: 10px">
+              排序方式<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="a">倒序</el-dropdown-item>
+                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+          <span>按照销量</span>
+          <div class="select">
+            <el-dropdown @command="handleCommand">
+            <span class="el-dropdown-link" style="margin-left: 10px">
+              排序方式<i class="el-icon-arrow-down el-icon--right"></i>
+            </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="a">倒序</el-dropdown-item>
+                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </div>
+
         </div>
         <div class="right-content">
           <ul>
@@ -116,6 +133,9 @@
       },
       handleCurrentChange(val) {
         console.log(`当前页: ${val}`);
+      },
+      handleCommand(command) {
+        this.$message('click on item ' + command);
       }
     },
 
@@ -162,16 +182,19 @@
         margin: 0 auto;
         .top-jia {
           width: 100%;
-          height: 40px;
+          height: 25px;
           text-align: left;
-          line-height: 40px;
-          select {
+          line-height: 25px;
+          display: flex;
+          .select {
             border-radius: 50px;
-            width: 150px;
+            width: 100px;
+            font-size: 12px;
             margin-left: 30px;
-            outline: none;
-            option {
-              font-size: 16px;
+            border: 1px solid #000;
+            .el-dropdown-link {
+              cursor: pointer;
+              font-size: 15px;
             }
           }
           span {
@@ -240,7 +263,7 @@
                 overflow: hidden;
                 margin-left: 70px;
                 margin-top: 10px;
-                display: none;
+               opacity: 0;
                 .go {
                   width: 50%;
                   height: 100%;
@@ -257,9 +280,14 @@
                 }
               }
               &:hover .xiaoguo {
-                display: block;
-                transition: 20s;
+                opacity: 1;
+                transition: 1s;
               }
+            }
+            li:hover{
+              transform: translateY(-10px);
+              box-shadow: 0 10px 10px 10px rgba(217, 217, 217, 0.5);
+              transition: 0.5s;
             }
           }
           .fen {
