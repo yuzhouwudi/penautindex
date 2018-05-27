@@ -9,11 +9,11 @@
       <img src="../assets/img/song.png" alt="">
       <div class="sin"><h1>登录</h1></div>
       <label>账号：</label>
-      <input type="text" class="input" placeholder="请输入手机号"><br>
+      <input type="tel" class="input" placeholder="请输入手机号" v-model="phone"><br>
       <label>密码：</label>
-      <input type="text" class="input" placeholder="请输入您的密码">
-      <button class="deng">马上登录</button>
-      <p>还不是会员？<span>立马去注册！</span></p>
+      <input type="text" class="input" placeholder="请输入您的密码" v-model="pass">
+      <button class="deng" @click="loginsub">马上登录</button>
+      <p>还不是会员？<span @click="cut">立马去注册！</span></p>
     </div>
 
     <div id="login" class="animated zoomIn" ref="zhu">
@@ -46,9 +46,10 @@
 
         <div class="user">
           <span v-if="!user">?</span>
-          <img src="" alt="" v-if="user">
+          <img :src="users.img" alt="" v-if="user">
         </div>
-        <p>未登录</p>
+        <p v-if="!user">未登录</p>
+        <p v-if="user">{{users.name}}</p>
       </div>
     </div>
 
@@ -87,12 +88,27 @@
         active: 0,
 
         flag: false,
-        user: false
+        user: false,
+        users: {
+          img: '',
+          name: ''
+        },
+
+        phone: '',
+        pass: ''
 
       }
     },
+    created(){
+      console.log(localStorage.users);
+
+
+
+    },
+
 
     mounted(){
+
 //    处理滑块的位置
       this.arr.forEach((val, index) => {
         val.x = this.$refs['li' + index][0].offsetLeft;
@@ -121,10 +137,62 @@
         } else {
           vm.active = index;
         }
+
       })
     },
 
+
     methods: {
+
+      loginsub(){
+        if (!this.phone) {
+          alert("请输入手机号码")
+        } else if (!/^1[3-9]\d{9}$/.test(this.phone)) {
+          alert("请输入正确的手机号码")
+        } else if (!this.pass) {
+          alert("请输入密码")
+        } else if (this.pass.length > 8) {
+          alert("密码不能超过8位")
+        } else {
+          let obj = {}
+          obj.phone = this.phone
+          obj.pass = this.pass
+          this.$http.post('/api/index/sign/user', obj, {
+            headers: {
+              "content-type": "application/json"
+            }
+          }).then(res => {
+//            console.log(res);
+            if (!res.body[0].id) {
+              this.$message.error(res.body);
+            } else {
+              this.$message({
+                message: '登陆成功',
+                type: 'success',
+                center: true
+              });
+              this.phone = ''
+              this.pass = ''
+              this.user = true
+              this.$refs.login.style.display = 'none'
+              this.flag = false
+              localStorage.users = res.body[0]
+              if (localStorage.users) {
+                this.user = true
+                if (localStorage.users.img) {
+                  this.users.img = localStorage.users.img
+                }
+                this.users.name = localStorage.users.name
+              }else{
+                this.user = false
+              }
+
+            }
+          })
+        }
+      },
+
+
       login(){
         this.flag = true
         this.$refs.login.style.display = 'block'
@@ -134,9 +202,9 @@
       none(){
         this.$refs.login.classList.remove('zoomIn')
         this.$refs.login.classList.add('zoomOut')
-        setTimeout(()=>{
+        setTimeout(() => {
           this.$refs.login.style.display = 'none'
-        },200)
+        }, 200)
         this.flag = false
       },
 
@@ -149,10 +217,21 @@
       nono(){
         this.$refs.zhu.classList.remove('zoomIn')
         this.$refs.zhu.classList.add('zoomOut')
-        setTimeout(()=>{
+        setTimeout(() => {
           this.$refs.zhu.style.display = 'none'
-        },200)
+        }, 200)
         this.flag = false
+      },
+
+
+      cut(){
+        this.$refs.login.classList.remove('zoomIn')
+        this.$refs.login.style.display = 'none'
+
+        this.$refs.zhu.style.display = 'block'
+        this.$refs.zhu.classList.remove('zoomOut')
+        this.$refs.zhu.classList.add('zoomIn')
+
       }
     }
   }
@@ -169,7 +248,6 @@
     left: 0;
     z-index: 100;
   }
-
 
   #enter {
     width: 496px;
@@ -398,12 +476,12 @@
         border-radius: 50%;
         margin-left: 30px;
         line-height: 50px;
-        span{
+        span {
           font-size: 22px;
           color: #f7f7f7;
           font-weight: 700;
         }
-        img{
+        img {
           width: 100%;
         }
       }

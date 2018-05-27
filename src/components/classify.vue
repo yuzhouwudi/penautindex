@@ -31,23 +31,23 @@
               排序方式<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">倒序</el-dropdown-item>
-                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
+                <el-dropdown-item command="desc">倒序</el-dropdown-item>
+                <el-dropdown-item command="asc" divided>升序</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-          <span>按照销量</span>
-          <div class="select">
-            <el-dropdown @command="handleCommand">
-            <span class="el-dropdown-link" style="margin-left: 10px">
-              排序方式<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">倒序</el-dropdown-item>
-                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
+          <!--<span>按照销量</span>-->
+          <!--<div class="select">-->
+            <!--<el-dropdown @command="handleCommand">-->
+            <!--<span class="el-dropdown-link" style="margin-left: 10px">-->
+              <!--排序方式<i class="el-icon-arrow-down el-icon&#45;&#45;right"></i>-->
+            <!--</span>-->
+              <!--<el-dropdown-menu slot="dropdown">-->
+                <!--<el-dropdown-item command="a">倒序</el-dropdown-item>-->
+                <!--<el-dropdown-item command="e" divided>升序</el-dropdown-item>-->
+              <!--</el-dropdown-menu>-->
+            <!--</el-dropdown>-->
+          <!--</div>-->
 
         </div>
         <div class="right-content">
@@ -81,12 +81,12 @@
           <div class="fen">
             <div class="block">
               <el-pagination
-                @size-change="handleSizeChange"
+                class="page"
                 @current-change="handleCurrentChange"
-                :current-page.sync="currentPage3"
-                :page-size="100"
-                layout="prev, pager, next, jumper"
-                :total="1000">
+                :current-page="currentPage"
+                :page-size="size"
+                layout="total , prev, pager, next, jumper"
+                :total="total">
               </el-pagination>
             </div>
           </div>
@@ -139,22 +139,49 @@
         data: [],
         arr: [],
         active: 0,
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
+
+        total: 0,
+        currentPage: 1,
+        size:6,
+        id:1
       };
     },
+    created(){
+      this.$http.get('/api/index/classify/count?id=1').then(res => {
+        this.total = res.body[0].total;
+//        console.log(res);
+      })
+
+      this.$http.get('/api/index/classify/show?id=1&nub=1&size='+this.size).then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.data = res.body;
+//        console.log(res);
+      })
+
+//
+      this.$http.get('/api/index/classify/list').then(res => {
+        this.arr = res.body
+//        console.log(res);
+      })
+
+    },
     methods: {
-      handleSizeChange(val) {
-//        console.log(`每页 ${val} 条`);
-      },
+
       handleCurrentChange(val) {
-//        console.log(`当前页: ${val}`);
+        this.currentPage = val
+        this.$http.get('/api/index/classify/show?id='+this.id+'&nub=' + val+'&size='+this.size).then(res => {
+          res.body.forEach(val => val.img = JSON.parse(val.img))
+            this.data = res.body;
+        })
       },
 
       show(id){
-        this.$http.get('/api/index/classify/show?id=' + id).then(res => {
+        this.$http.get('/api/index/classify/count?id='+id).then(res => {
+          this.total = res.body[0].total;
+        })
+
+        this.id=id
+        this.$http.get('/api/index/classify/show?id=' + id+'&nub=1&size='+this.size).then(res => {
           res.body.forEach(val => val.img = JSON.parse(val.img))
           this.data = res.body
 //        console.log(res);
@@ -162,26 +189,20 @@
       },
 
       handleCommand(command) {
-        this.$message('click on item ' + command);
+        if(command=='asc'){
+          this.data.sort((a,b)=>{
+                return a.price-b.price
+          })
+        }else{
+          this.data.sort((a,b)=>{
+            return b.price-a.price
+          })
+        }
       }
-
     },
 
 
-    created(){
-      this.$http.get('/api/index/classify/show?id=1').then(res => {
-        res.body.forEach(val => val.img = JSON.parse(val.img))
-        this.data = res.body
-//        console.log(res);
-      })
 
-      this.$http.get('/api/index/classify/list').then(res => {
-//        res.body.forEach(val=>val.img=JSON.parse(val.img))
-        this.arr = res.body
-//        console.log(res);
-      })
-
-    }
   }
 </script>
 
@@ -207,7 +228,7 @@
     }
     .content {
       width: 100%;
-      height: 1580px;
+      height: 920px;
       .left {
         width: 252px;
         height: 350px;

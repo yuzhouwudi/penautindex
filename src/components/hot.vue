@@ -16,61 +16,50 @@
               排序方式<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">倒序</el-dropdown-item>
-                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
+                <el-dropdown-item command="desc">倒序</el-dropdown-item>
+                <el-dropdown-item command="asc" divided>升序</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
-          <span>按照销量</span>
-          <div class="select">
-            <el-dropdown @command="handleCommand">
-            <span class="el-dropdown-link" style="margin-left: 10px">
-              排序方式<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">倒序</el-dropdown-item>
-                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
+
 
         </div>
         <div class="right-content">
           <ul>
 
-              <li v-for="item in data" :key="item.id">
-                <div class="content-img">
-                  <div class="tupian">
-                    <router-link :to="'/new?id='+item.id">
-                      <img :src="item.img[0].url" alt="">
-                    </router-link>
-                  </div>
-                  <span>Papyrus nut</span>
-                  <span></span>
-                  <p>{{item.name}}</p>
-                  <h6>RMB<span>{{item.price}}</span></h6>
-                  <div class="xiaoguo">
-                    <router-link to="">
-                      <div class="go">购买</div>
-                    </router-link>
-                    <router-link to="">
-                      <div class="shou">收藏</div>
-                    </router-link>
-                  </div>
+            <li v-for="item in data" :key="item.id">
+              <div class="content-img">
+                <div class="tupian">
+                  <router-link :to="'/new?id='+item.id">
+                    <img :src="item.img[0].url" alt="">
+                  </router-link>
                 </div>
-              </li>
+                <span>Papyrus nut</span>
+                <span></span>
+                <p>{{item.name}}</p>
+                <h6>RMB<span>{{item.price}}</span></h6>
+                <div class="xiaoguo">
+                  <router-link to="">
+                    <div class="go">购买</div>
+                  </router-link>
+                  <router-link to="">
+                    <div class="shou">收藏</div>
+                  </router-link>
+                </div>
+              </div>
+            </li>
 
 
           </ul>
           <div class="fen">
             <div class="block">
               <el-pagination
-                @size-change="handleSizeChange"
+                class="page"
                 @current-change="handleCurrentChange"
-                :current-page.sync="currentPage3"
-                :page-size="100"
-                layout="prev, pager, next, jumper"
-                :total="1000">
+                :current-page="currentPage"
+                :page-size="size"
+                layout="total , prev, pager, next, jumper"
+                :total="total">
               </el-pagination>
             </div>
           </div>
@@ -121,36 +110,59 @@
     data() {
       return {
         data: [],
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
+        total: 0,
+        currentPage: 1,
+        size: 8,
       };
     },
+    created(){
+      this.$http.get('/api/index/hot/count').then(res => {
+        this.total = res.body.total;
+//        console.log(res);
+      })
+
+      this.$http.get('/api/index/hot/hot?nub=1&size=' + this.size).then(res => {
+        let hot = [];
+        res.body.forEach(val => {
+          let aa = JSON.parse(val);
+          aa.img = JSON.parse(aa.img);
+          hot.push(aa);
+        });
+        this.data = hot;
+//        console.log(hot);
+      })
+
+
+    },
+
     methods: {
-      handleSizeChange(val) {
-        console.log(`每页 ${val} 条`);
-      },
+
       handleCurrentChange(val) {
-        console.log(`当前页: ${val}`);
+        this.$http.get('/api/index/hot/hot?nub=' + val + '&size=' + this.size).then(res => {
+          let hot = [];
+          res.body.forEach(val => {
+            let aa = JSON.parse(val);
+            aa.img = JSON.parse(aa.img);
+            hot.push(aa);
+          });
+          this.data = hot;
+//          console.log(hot);
+        })
       },
       handleCommand(command) {
-        this.$message('click on item ' + command);
+        if (command == 'asc') {
+          this.data.sort((a, b) => {
+            return a.price - b.price
+          })
+        } else {
+          this.data.sort((a, b) => {
+            return b.price - a.price
+          })
+        }
       }
     },
 
-    created(){
-      this.$http.get('/api/index/hot/hot').then(res => {
-        let hot = []
-        res.body.forEach(val => {
-          let aa = JSON.parse(val)
-          aa.img = JSON.parse(aa.img)
-          hot.push(aa)
-        })
-        this.data = hot
-//        console.log(hot);
-      })
-    }
+
   }
 </script>
 
@@ -263,7 +275,7 @@
                 overflow: hidden;
                 margin-left: 70px;
                 margin-top: 10px;
-               opacity: 0;
+                opacity: 0;
                 .go {
                   width: 50%;
                   height: 100%;
@@ -284,7 +296,7 @@
                 transition: 1s;
               }
             }
-            li:hover{
+            li:hover {
               transform: translateY(-10px);
               box-shadow: 0 10px 10px 10px rgba(217, 217, 217, 0.5);
               transition: 0.5s;

@@ -112,7 +112,7 @@
       display: flex;
       .big_left {
         width: 182px;
-        height: auto;
+        height: 300px;
         border: 1px solid #000;
         margin-right: 30px;
         p {

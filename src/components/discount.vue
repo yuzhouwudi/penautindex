@@ -16,20 +16,8 @@
               排序方式<i class="el-icon-arrow-down el-icon--right"></i>
             </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">倒序</el-dropdown-item>
-                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
-          <span>按照销量</span>
-          <div class="select">
-            <el-dropdown @command="handleCommand">
-            <span class="el-dropdown-link" style="margin-left: 10px">
-              排序方式<i class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-              <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="a">倒序</el-dropdown-item>
-                <el-dropdown-item command="e" divided>升序</el-dropdown-item>
+                <el-dropdown-item command="desc">倒序</el-dropdown-item>
+                <el-dropdown-item command="asc" divided>升序</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </div>
@@ -41,7 +29,7 @@
               <div class="content-img">
                 <div class="tupian">
                   <router-link :to="'/new?id='+item.id">
-                     <img :src="item.img[0].url" alt="">
+                    <img :src="item.img[0].url" alt="">
                   </router-link>
                 </div>
 
@@ -64,12 +52,12 @@
           <div class="fen">
             <div class="block">
               <el-pagination
-                @size-change="handleSizeChange"
+                class="page"
                 @current-change="handleCurrentChange"
-                :current-page.sync="currentPage3"
-                :page-size="100"
-                layout="prev, pager, next, jumper"
-                :total="1000">
+                :current-page="currentPage"
+                :page-size="size"
+                layout="total , prev, pager, next, jumper"
+                :total="total">
               </el-pagination>
             </div>
           </div>
@@ -120,64 +108,83 @@
     name: "commodity",
     data() {
       return {
-          data:[],
-        currentPage1: 5,
-        currentPage2: 5,
-        currentPage3: 5,
-        currentPage4: 4
+        data: [],
+        total: 0,
+        currentPage: 1,
+        size: 8,
       };
     },
+    created(){
+      this.$http.get('/api/index/discount/count').then(res => {
+        this.total = res.body.total;
+//        console.log(res);
+      })
+
+      this.$http.get('/api/index/discount/discount?nub=1&size=' + this.size).then(res => {
+        let hot = [];
+        res.body.forEach(val => {
+          let aa = JSON.parse(val);
+          aa.img = JSON.parse(aa.img);
+          hot.push(aa);
+        });
+        this.data = hot;
+//        console.log(hot);
+      })
+    },
+
     methods: {
-      handleSizeChange(val) {
-//        console.log(`每页 ${val} 条`);
-      },
       handleCurrentChange(val) {
-//        console.log(`当前页: ${val}`);
+        this.$http.get('/api/index/discount/discount?nub=' + val + '&size=' + this.size).then(res => {
+          let hot = [];
+          res.body.forEach(val => {
+            let aa = JSON.parse(val);
+            aa.img = JSON.parse(aa.img);
+            hot.push(aa);
+          });
+          this.data = hot;
+//          console.log(hot);
+        })
       },
       handleCommand(command) {
-        this.$message('click on item ' + command);
+        if (command == 'asc') {
+          this.data.sort((a, b) => {
+            return a.price - b.price
+          })
+        } else {
+          this.data.sort((a, b) => {
+            return b.price - a.price
+          })
+        }
       }
     },
 
-    created(){
-      this.$http.get('/api/index/discount/discount').then(res => {
-        let hot=[];
-        res.body.forEach(val=>{
-          let aa=JSON.parse(val);
-          aa.img=JSON.parse(aa.img);
-          hot.push(aa);
-        });
-        this.data=hot;
-//        console.log(hot);
-      })
-    }
 
   }
 </script>
 
 <style scoped lang="scss">
-  .container{
+  .container {
     width: 1200px;
     height: auto;
     margin: 0 auto;
-    .top-img{
+    .top-img {
       width: 100%;
       height: auto;
     }
-    .size{
+    .size {
       width: 100%;
       height: 75px;
-      p{
+      p {
         font-size: 16px;
-        padding-top:20px;
+        padding-top: 20px;
         text-align: left;
         color: #737373;
       }
     }
-    .content{
+    .content {
       width: 100%;
       height: auto;
-      .right{
+      .right {
         width: 1200px;
         height: auto;
         margin: 0 auto;
@@ -202,68 +209,68 @@
             margin-left: 40px;
           }
         }
-        .right-content{
+        .right-content {
           width: 100%;
           height: auto;
-          ul{
+          ul {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            li{
+            li {
               width: 246px;
               height: 305px;
               float: left;
               box-shadow: 1px 1px 3px 2px rgba(216, 216, 216, 0.4);
               margin-top: 30px;
               margin-right: 54px;
-              .tupian{
+              .tupian {
                 width: 175px;
                 height: 125px;
                 background: #fff;
                 margin: 20px auto 0;
-                img{
+                img {
                   height: 100%;
                 }
               }
-              span:nth-child(2){
+              span:nth-child(2) {
                 display: block;
                 width: 100%;
                 height: 30px;
-                font-size:19px
+                font-size: 19px
               }
-              span:nth-child(3){
+              span:nth-child(3) {
                 display: block;
                 width: 120px;
                 height: 2px;
                 background: yellow;
                 margin-left: 60px;
               }
-              p{
+              p {
                 width: 100%;
                 height: 30px;
                 font-size: 17px;
                 line-height: 30px;
               }
-              h6{
+              h6 {
                 text-align: left;
                 font-size: 16px;
                 color: #4f4e44;
                 margin-top: 10px;
                 margin-left: 30px;
-                span{
+                span {
                   font-size: 20px;
                   margin-left: 10px;
                   color: #c30827;
                 }
               }
-              h5{
+              h5 {
                 font-size: 14px;
                 color: #999091;
                 margin-left: 100px;
                 margin-top: -20px;
                 text-decoration: line-through
               }
-              .xiaoguo{
+              .xiaoguo {
                 width: 100px;
                 height: 20px;
                 border: yellow 1px solid;
@@ -272,14 +279,14 @@
                 margin-left: 70px;
                 margin-top: 10px;
                 opacity: 0;
-                .go{
+                .go {
                   width: 50%;
                   height: 100%;
                   background: yellow;
                   font-size: 14px;
                   float: left;
                 }
-                .shou{
+                .shou {
                   width: 50%;
                   height: 100%;
                   /*background: yellow;*/
@@ -287,22 +294,22 @@
                   float: left;
                 }
               }
-              &:hover .xiaoguo{
+              &:hover .xiaoguo {
                 opacity: 1;
                 transition: 1s;
               }
             }
-            li:hover{
+            li:hover {
               transform: translateY(-10px);
               box-shadow: 0 10px 10px 10px rgba(217, 217, 217, 0.5);
               transition: 0.5s;
             }
           }
-          .fen{
+          .fen {
             width: 100%;
             height: 200px;
             float: left;
-            .block{
+            .block {
               margin-top: 60px;
             }
           }
@@ -310,22 +317,21 @@
       }
     }
 
-
-    .tou{
+    .tou {
       width: 1200px;
       height: 150px;
       margin: 100px auto 0;
       position: relative;
-      .pic{
+      .pic {
         width: 251px;
         margin: 0 auto;
         position: relative;
-        img{
+        img {
           width: 100%;
         }
-        h1{
+        h1 {
           position: absolute;
-          top:144px;
+          top: 144px;
           left: 124px;
           color: #fff;
           font-size: 20px;
@@ -333,44 +339,42 @@
       }
     }
 
-    .nuts{
+    .nuts {
       width: 1200px;
       height: auto;
       margin: 100px auto 50px;
       display: flex;
-      li{
-        width: calc(100%/4);
+      li {
+        width: calc(100% / 4);
         height: 437px;
-        img{
+        img {
           width: 100%;
         }
-        h1{
+        h1 {
           font-size: 20px;
           color: #393535;
         }
-        p{
+        p {
           font-size: 18px;
           color: #787070;
         }
-        h2{
+        h2 {
           margin-top: 10px;
           font-size: 22px;
           color: #c30827;
-          span{
+          span {
             font-size: 16px;
             color: #000;
             margin-left: 10px;
           }
         }
       }
-      li:hover{
+      li:hover {
         transform: translateY(-10px);
-        box-shadow: 0 10px 10px 10px rgba(217,217,217,0.5);
+        box-shadow: 0 10px 10px 10px rgba(217, 217, 217, 0.5);
         transition: 0.5s;
       }
     }
-
-
 
   }
 

@@ -19,3 +19,8 @@ img{
 .iconfont{
     font-family: 'iconfont';
 }
+button{
+  outline: none;
+  cursor: pointer;
+}
+
