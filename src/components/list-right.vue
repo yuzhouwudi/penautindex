@@ -23,52 +23,89 @@
         </ul>
       </div>
     </div>
-    <div class="right_bot" v-if="flag">
-      <div class="time">
-        <p>订单编号: 1769816226</p>
-        <p>下单时间：2017-12-01 10:09:53</p>
-      </div>
-      <div class="goods">
-        <div class="tu">
-          <img src="../assets/img/goods1.png" alt="">
+    <template v-if="arr.length">
+      <div class="right_bot" v-for="item in list">
+        <div class="time">
+          <p>订单编号: 1769816226</p>
+          <p>下单时间：2017-12-01 10:09:53</p>
         </div>
-        <div class="desc">
-          <p>坚果核桃</p>
-          <p>MEI HUO YILP</p>
-          <div class="taste">奶油味</div>
+        <div class="goods">
+          <div class="tu">
+            <img src="../assets/img/goods1.png" alt="">
+          </div>
+          <div class="desc">
+            <p>坚果核桃</p>
+            <p>MEI HUO YILP</p>
+            <div class="taste">奶油味</div>
+          </div>
+          <ul class="goods_li">
+            <li>56.00</li>
+            <li>*1</li>
+            <li>56.00</li>
+            <li>{{status}}<br>交易详情</li>
+            <!--<li>删除订单</li>-->
+          </ul>
         </div>
-        <ul class="goods_li">
-          <li>56.00</li>
-          <li>*1</li>
-          <li>56.00</li>
-          <!--<li>交易取消<br>交易详情</li>-->
-          <!--<li>删除订单</li>-->
-        </ul>
       </div>
-    </div>
-    <div class="none" v-if="!flag">
+    </template>
+
+    <div class="none" v-else>
       暂无此类订单
     </div>
   </div>
 </template>
 <script>
-    export default{
-        name: 'list-right',
-        data(){
-            return {
-              flag:true
-            }
-        },
-      methods:{
-        xuan(e){
-          let xuan = this.$refs.xuan.querySelectorAll('a')
-          xuan.forEach(val => {
-            val.classList.remove('active')
-            e.target.classList.add('active')
-          })
-        },
+  export default{
+    name: 'list-right',
+    data(){
+      return {
+        arr: [],
+        list: [],
+        status: '',
+        count: []
       }
+    },
+    created(){
+
+          if (!localStorage.users) {
+        return
+      }
+      let users = JSON.parse(localStorage.users)
+      let uid = users.id;
+      this.$http.get('/api/index/list/user?uid=' + uid).then(res => {
+        this.arr = res.body;
+//        console.log(this.arr);
+        this.arr.forEach(val => {
+
+          this.$http.get('/api/index/list/find?dingdanid=' + val.id).then(res => {
+            this.count.push(res.body[0]);
+//        console.log(res.body)
+          })
+          this.$http.get('/api/index/list/display?dingdanid=' + val.id).then(res => {
+//            this.count.push(res.body[0]);
+            console.log(res.body)
+          })
+
+        })
+
+
+
+
+
+      })
+
+
+    },
+    methods: {
+      xuan(e){
+        let xuan = this.$refs.xuan.querySelectorAll('a')
+        xuan.forEach(val => {
+          val.classList.remove('active')
+          e.target.classList.add('active')
+        })
+      },
     }
+  }
 </script>
 <style scoped lang='scss'>
   .big_right {
@@ -210,7 +247,7 @@
         transition: 0.5s;
       }
     }
-    .none{
+    .none {
       margin: 50px;
       font-size: 20px;
       font-weight: 600;

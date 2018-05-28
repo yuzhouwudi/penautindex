@@ -6,23 +6,22 @@
 
     <div class="jin">
       <el-steps :active="active" finish-status="success">
-        <el-step title="查看清单"></el-step>
-        <el-step title="填写订单"></el-step>
+        <el-step title="查看购物车"></el-step>
+        <el-step title="查看订单"></el-step>
         <el-step title="付款完成购买"></el-step>
       </el-steps>
 
     </div>
 
     <div class="jiage">
-      <ul>
-        <li v-for="item in arr">
+      <ul v-if="arr.length">
+
+        <li :key="item.id" v-for="item in arr">
           <span>
-            <template>
-              <el-checkbox v-model="checked"></el-checkbox>   <!-- `checked` 为 true 或 false -->
-            </template>
+
           </span>
           <span>
-            <img src="../assets/img/5_03.png" alt="">
+             <img :src="item.img" alt="">
           </span>
           <span>
             <p>{{item.name}}</p>
@@ -30,21 +29,24 @@
           </span>
           <span>RMB  {{item.price}}</span>
           <span>
-            <template>
-                <el-input-number v-model="num1" @change="handleChange" :min="1" :max="10" label="描述文字"></el-input-number>
-            </template>
-          </span>
-          <span>RMB  {{item.count * item.price}}</span>
-          <div class="x">x</div>
+              <el-input-number v-model="item.count" @change="handleChange" :min="1" :max="10" label="描述文字"
+                               :key="item.id"></el-input-number>
+            </span>
+          <span>RMB  {{(item.count * item.price).toFixed(2)}}</span>
+          <div class="x" @click="del(item)">x</div>
         </li>
 
+
       </ul>
-      <div class="fu">
-        <!--<span>商品价格总计109.00</span>-->
-        <!--<span>共选择3件商品</span>-->
+
+      <div class="none" v-else>暂无添加的商品，去添加购物车吧</div>
+
+      <div class="fu" v-if="arr.length">
+        <span>商品价格总计{{total.price}}</span>
+        <span>共选择{{total.sum}}件商品</span>
         <div class="anniu">
           <el-row>
-            <el-button type="success" round @click="next">去结账</el-button>
+            <el-button type="success" round @click="next">提交订单</el-button>
           </el-row>
         </div>
       </div>
@@ -96,27 +98,115 @@
         active: 0,
         num1: 1,
         checked: true,
-        arr: []
+        arr: [],
+        all: '',
+        checkAll: false,
+        checkedCities: [],
+        isIndeterminate: true
       };
     },
     created(){
-      let uid = 1;
+      if (!localStorage.users) {
+        return
+      }
+      let users = JSON.parse(localStorage.users)
+      let uid = users.id;
       this.$http.get('/api/index/buycar/display?uid=' + uid).then(res => {
         this.arr = res.body;
 //        console.log(res.body)
       })
     },
+    updated(){
+      let total = 0;
+      this.arr.forEach(function (val, index) {
+        total += val.count * val.price
+      });
+      this.all = total;
+    },
+    computed: {
+      total(){
+        let sum = 0;
+        let price = 0;
+        this.arr.forEach(function (val, index) {
+          price += Number((val.price * val.count))
+          sum += val.count
+        })
+        price = price.toFixed(2)
+        return {sum, price}
+      }
+    },
 
 
     methods: {
       next() {
-        if (this.active++ > 1) this.active = 0;
+//        console.log(this.arr);
+        if(!this.arr.length){
+          this.$message({
+            message: '购物车没有商品',
+            type: 'warning'
+          });
+          return
+        }
+        let obj = JSON.stringify(this.arr)
+        this.$http.post('/api/index/list/addlist', obj, {
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then(res => {
+//          console.log(res);
+          if (res.body == 'ok') {
+            this.$message({
+              message: '提交成功',
+              type: 'success'
+            });
+            this.arr.splice(0,this.arr.length);
+
+            let users = JSON.parse(localStorage.users)
+            let uid = users.id;
+
+            this.$http.get('/api/index/list/delbuycar?id=' + uid).then(res => {
+//              console.log(res);
+//              if (res.body.affectedRows === 1) {
+//                this.$message({
+//                  message: '删除成功',
+//                  type: 'success'
+//                });
+//              } else {
+//                this.$message.error('删除失败')
+//              }
+            })
+
+          } else {
+            this.$message.error('提交失败')
+          }
+        })
+//        this.$router.push('/list/right')
       },
+      del(item){
+        let index = this.arr.findIndex(val => val.id === item.id)
+        let id = (this.arr.find((val, ind) => ind == index)).id
+//        console.log(index,id);
+        this.arr.splice(index, 1)
+
+        this.$http.get('/api/index/buycar/delbuycar?id=' + id).then(res => {
+          if (res.body.affectedRows === 1) {
+            this.$message({
+              message: '删除成功',
+              type: 'success'
+            });
+          } else {
+            this.$message.error('删除失败')
+          }
+        })
+      },
+
       handleChange(value) {
-        console.log(value);
+//        console.log(value);
+        this.num1 = value
       },
 
     },
+
 
 //        这个别瞎删，是session存上了之后的判断
 //    beforeRouteEnter(to, from, next){
@@ -125,7 +215,7 @@
 //          console.log(res);
 //          if (res == 'n') {
 //            vm.$message.error('请先登录')
-////                        vm.$router.push('/')
+////           vm.$router.push('/')
 //          } else {
 //            vm.name = res
 //          }
@@ -171,9 +261,13 @@
           span:nth-child(2) {
             display: block;
             width: 100px;
+            overflow: hidden;
             float: left;
             margin-top: 30px;
             margin-left: 10px;
+            img {
+              width: 100%;
+            }
           }
           span:nth-child(3) {
             display: block;
@@ -217,10 +311,15 @@
           }
         }
       }
+      .none{
+        width: 100%;
+        height: 180px;
+      }
       .fu {
         width: 100%;
         height: 150px;
         margin-bottom: 20px;
+        margin-top: 150px;
         /*background: #ccc;*/
         text-align: right;
         span:nth-child(1) {
@@ -260,7 +359,7 @@
         }
         h1 {
           position: absolute;
-          top: 145px;
+          top: 45px;
           left: 124px;
           color: #fff;
           font-size: 20px;

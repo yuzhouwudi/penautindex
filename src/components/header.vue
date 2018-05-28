@@ -45,12 +45,15 @@
         <router-link to="/car"><span class="iconfont icon-gouwuche"></span></router-link>
 
         <div class="user">
-          <span v-if="!user">?</span>
-          <img :src="users.img" alt="" v-if="user">
+          <span v-if="!users.img">?</span>
+          <img :src="users.img[0].url" alt="" v-if="users.img">
         </div>
-        <p v-if="!user">未登录</p>
-        <p v-if="user">{{users.name}}</p>
+
+        <p v-if="!users.name">未登录</p>
+        <el-button type="text" @click="open4" v-if="users.name" style="color: #000;margin-left: 10px">{{users.name}}</el-button>
+        <!--<p v-if="users.name">{{users.name}}</p>-->
       </div>
+
     </div>
 
     <div class="middom">
@@ -88,7 +91,7 @@
         active: 0,
 
         flag: false,
-        user: false,
+
         users: {
           img: '',
           name: ''
@@ -100,14 +103,18 @@
       }
     },
     created(){
-      console.log(localStorage.users);
-
-
-
-    },
+      if (localStorage.users) {
+        let obj=JSON.parse(localStorage.users)
+        if (obj.img) {
+          this.users.img = JSON.parse(obj.img)
+        }
+        this.users.name = obj.name
+      }
+   },
 
 
     mounted(){
+
 
 //    处理滑块的位置
       this.arr.forEach((val, index) => {
@@ -143,6 +150,29 @@
 
 
     methods: {
+      open4(){
+        const h = this.$createElement;
+        this.$msgbox({
+          title: '提示',
+          message: h('p', null, [
+            h('span', null, '是否退出登录? '),
+          ]),
+          showCancelButton: true,
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+        })
+          .then(() => {
+            this.$message({
+              type: 'success',
+              message: '退出成功!'
+            });
+            localStorage.users=''
+            this.$router.go(0)
+          }).catch(() => {
+
+        })
+
+      },
 
       loginsub(){
         if (!this.phone) {
@@ -176,17 +206,9 @@
               this.user = true
               this.$refs.login.style.display = 'none'
               this.flag = false
-              localStorage.users = res.body[0]
-              if (localStorage.users) {
-                this.user = true
-                if (localStorage.users.img) {
-                  this.users.img = localStorage.users.img
-                }
-                this.users.name = localStorage.users.name
-              }else{
-                this.user = false
-              }
-
+              localStorage.users = JSON.stringify(res.body[0])
+//              console.log(localStorage.users);
+              this.$router.go(0)
             }
           })
         }
@@ -474,6 +496,7 @@
         height: 50px;
         background: #f0f0f0;
         border-radius: 50%;
+        overflow: hidden;
         margin-left: 30px;
         line-height: 50px;
         span {
