@@ -4,7 +4,9 @@
       <img src="../assets/img/banner.png" alt="">
       <div class="little">
         <img src="../assets/img/banner1.png" alt="">
-        <button>more</button>
+        <router-link to="/classify">
+           <button>more</button>
+        </router-link>
       </div>
     </div>
 
@@ -29,41 +31,35 @@
       </div>
     </div>
 
-    <div class="xinpin">
+    <div class="xinpin" v-for="item in data" :key="item.id">
       <div class="xin_left">
         <h1>TWO WHEELED</h1>
         <h2>ANALL LA</h2>
         <h3>品质生活每天一把坚果</h3>
         <h4>全网坚果销量遥遥领先</h4>
         <h5>Quality life one nut per day</h5>
-        <h6>RMB<span>66</span></h6>
+        <h6>RMB<span>{{item.price}}</span></h6>
         <p>RMB:110</p>
         <button>BUY NOW</button>
       </div>
       <div class="xin_right">
-        <img src="../assets/img/xinpin.png" alt="">
+        <router-link :to="'/new?id='+item.id">
+           <img :src="item.img[0].url" alt="">
+           <!--<img src="../assets/img/xinpin.png" alt="">-->
+        </router-link>
       </div>
     </div>
 
     <div class="xiangxi">
-      <div class="xi_box">
-        <img src="../assets/img/xiangxi_1.png" alt="">
-        <p>碧根果<span>200g*1袋</span></p>
-        <h1>RMB<span>36.6</span></h1>
+      <div class="xi_box" v-for="item in arr" :key="item.id">
+        <router-link :to="'/new?id='+item.id">
+          <img :src="item.img[2].url" alt="">
+        </router-link>
+        <p>{{item.name}}</p>
+        <h1>RMB<span>{{item.price}}</span></h1>
         <button>BUY</button>
       </div>
-      <div class="xi_box">
-        <img src="../assets/img/xiangxi_2.png" alt="">
-        <p>碧根果<span>200g*1袋</span></p>
-        <h1>RMB<span>36.6</span></h1>
-        <button>BUY</button>
-      </div>
-      <div class="xi_box">
-        <img src="../assets/img/xiangxi_3.png" alt="">
-        <p>碧根果<span>200g*1袋</span></p>
-        <h1>RMB<span>36.6</span></h1>
-        <button>BUY</button>
-      </div>
+
     </div>
 
     <div class="tou">
@@ -82,23 +78,14 @@
         <h2>SHDE</h2>
         <h3>坚果分类<span>CATEGDRY</span></h3>
         <h4>TOWN<span>SHOP</span></h4>
-        <div class="hot_box">
-          <img src="../assets/img/ren2.png" alt="">
+        <div class="hot_box" v-for="item in brr" :key="item.id">
+          <img :src="item.img[2].url" alt="">
+          <!--<img src="../assets/img/ren2.png" alt="">-->
           <h1>最新上新</h1>
-          <p>big boon 吸睛必备爆款</p>
-          <button>MORE</button>
-        </div>
-        <div class="hot_box">
-          <img src="../assets/img/ren3.png" alt="">
-          <h1>最新上新</h1>
-          <p>big boon 吸睛必备爆款</p>
-          <button>MORE</button>
-        </div>
-        <div class="hot_box">
-          <img src="../assets/img/ren4.png" alt="">
-          <h1>最新上新</h1>
-          <p>big boon 吸睛必备爆款</p>
-          <button>MORE</button>
+          <p>{{item.name}}</p>
+          <router-link :to="'/new?id='+item.id">
+            MORE
+          </router-link>
         </div>
       </div>
     </div>
@@ -111,16 +98,18 @@
     </div>
 
     <div class="count">
-      <div class="cou_top">
+      <div class="cou_top" v-for="item in err" :key="item.id">
         <div class="cou_top_box">
           <div class="pic_left">
             <img src="../assets/img/zhekou1.png" alt="">
-
           </div>
           <div class="pic_right">
-            <img src="../assets/img/s1.png" alt="">
+            <router-link :to="'/new?id='+item.id">
+              <img :src="item.img[2].url" alt="">
+            </router-link>
+            <!--<img src="../assets/img/s1.png" alt="">-->
             <div class="xin_left">
-              <h6>RMB<span>66</span></h6>
+              <h6>RMB<span>{{item.price}}</span></h6>
               <p>RMB:110</p>
               <button>BUY NOW</button>
             </div>
@@ -128,12 +117,15 @@
         </div>
       </div>
       <div class="con_bot">
-        <div class="cou_top">
+        <div class="cou_top" v-for="item in frr" :key="item.id">
           <div class="cou_top_box">
             <div class="pic_right">
-              <img src="../assets/img/s2.png" alt="">
+              <router-link :to="'/new?id='+item.id">
+                <img :src="item.img[2].url" alt="">
+              </router-link>
+              <!--<img src="../assets/img/s2.png" alt="">-->
               <div class="xin_left bot">
-                <h6>RMB<span>66</span></h6>
+                <h6>RMB<span>{{item.price}}</span></h6>
                 <p>RMB:110</p>
                 <button>BUY NOW</button>
               </div>
@@ -154,96 +146,97 @@
     </div>
 
     <ul class="bottom">
-      <li>
+      <li v-for="item in crr" :key="item.id">
         <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
+          <router-link :to="'/new?id='+item.id">
+            <img :src="item.img[0].url" alt="">
+          </router-link>
         </div>
         <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
+          <span> {{item.name}}</span>
           <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
-        </div>
-        <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
-          <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
-        </div>
-        <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
-          <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
+            <div> {{item.price}}<span>RMB </span><button> BUY</button></div>
           </div>
         </div>
       </li>
     </ul>
 
     <ul class="bottom">
-      <li>
+      <li v-for="item in drr" :key="item.id">
         <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
+           <router-link :to="'/new?id='+item.id">
+             <img :src="item.img[0].url" alt="">
+           </router-link>
         </div>
         <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
+          <span> {{item.name}}</span>
           <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
-        </div>
-        <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
-          <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
-        </div>
-        <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
-          <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
+            <div> {{item.price}}<span>RMB </span><button> BUY</button></div>
           </div>
         </div>
       </li>
     </ul>
 
-  </div>
 
+  </div>
 </template>
 <script>
   export default {
     data(){
-      return {}
+      return {
+          data:[],
+          arr:[],
+          brr:[],
+          crr:[],
+          drr:[],
+          err:[],
+          frr:[]
+      }
+    },
+
+    created(){
+      this.$http.get('/api/index/home/home').then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.data = res.body;
+//        console.log(res);
+      });
+
+      this.$http.get('/api/index/home/xinpin').then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.arr = res.body;
+//        console.log(res);
+      });
+
+      this.$http.get('/api/index/home/rexiao').then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.brr = res.body;
+//        console.log(res);
+      });
+
+      this.$http.get('/api/index/home/nuts').then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.crr = res.body;
+//        console.log(res);
+      });
+
+      this.$http.get('/api/index/home/nutss').then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.drr = res.body;
+//        console.log(res);
+      })
+
+      this.$http.get('/api/index/home/zhe').then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.err = res.body;
+//        console.log(res);
+      })
+
+      this.$http.get('/api/index/home/kou').then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.frr = res.body;
+//        console.log(res);
+      })
+
     }
   }
 </script>
@@ -377,14 +370,14 @@
           margin-top: 20px;
           span {
             font-size: 20px;
-            margin-left: 20px;
+            margin-left: 15px;
             color: #c30827;
           }
         }
         p {
           font-size: 14px;
           color: #999091;
-          margin-left: -50px;
+          margin-left: -30px;
           margin-top: -20px;
           text-decoration: line-through
         }
@@ -397,7 +390,7 @@
           border: none;
           font-size: 12px;
           margin-top: 20px;
-          margin-left: -245px;
+          margin-left: -255px;
           outline: none;
           cursor: pointer;
         }
@@ -429,9 +422,10 @@
           }
         }
         h1 {
-          text-align: left;
+
           font-size: 16px;
-          margin-left: 68px;
+          text-align: center;
+          /*margin-left: 68px;*/
           margin-top: 10px;
           span {
             font-size: 22px;
@@ -448,7 +442,7 @@
           border: none;
           font-size: 12px;
           margin-top: 10px;
-          margin-left: -88px;
+          text-align: center;
           outline: none;
           cursor: pointer;
         }
@@ -460,16 +454,25 @@
         width: 283px;
         height: 355px;
         margin-left: 180px;
+        img{
+          width: 100%;
+        }
       }
       .xi_box:nth-child(2) {
         width: 283px;
         height: 355px;
         margin-left: 40px;
+        img{
+          width: 100%;
+        }
       }
       .xi_box:nth-child(3) {
         width: 283px;
         height: 355px;
         margin-left: 40px;
+        img{
+          width: 100%;
+        }
       }
       .xi_box:hover {
         transform: translateY(-10px);
@@ -545,9 +548,9 @@
             font-size: 14px;
             color: #000;
           }
-          button {
-            width: 80px;
-            height: 15px;
+          a {
+            width: 100px;
+            height: 35px;
             background: #181717;
             border: none;
             color: #fff;
@@ -555,7 +558,7 @@
             outline: none;
             cursor: pointer;
           }
-          button:hover {
+          a:hover {
             background: #ef4e4e;
           }
         }
@@ -601,14 +604,14 @@
                 color: #4f4e44;
                 span {
                   font-size: 20px;
-                  margin-left: 20px;
+                  margin-left: 12px;
                   color: #c30827;
                 }
               }
               p {
                 font-size: 14px;
                 color: #999091;
-                margin-left: 100px;
+                margin-left: 123px;
                 margin-top: -20px;
                 text-decoration: line-through
               }
@@ -621,7 +624,7 @@
                 border: none;
                 font-size: 12px;
                 margin-top: 15px;
-                margin-left: -80px;
+                margin-left: -110px;
                 outline: none;
                 cursor: pointer;
               }
@@ -645,11 +648,12 @@
     }
 
     ul {
-      width: 1200px;
-      height: 480px;
+      width: 1000px;
+      height: 310px;
       display: flex;
       margin: 0 auto 67px;
       li {
+        width: 200px;
         flex-grow: 1;
         height: 100%;
         overflow: hidden;
@@ -657,8 +661,13 @@
           box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.7);
         }
         .imgtop {
-          width: 100%;
-          height: 339px;
+          width: 230px;
+          height: 209px;
+          margin: 0 auto;
+          img{
+            width: 100%;
+            margin: 0 auto;
+          }
         }
         .imgbot {
           width: 100%;
@@ -691,9 +700,10 @@
               }
             }
             button {
-              margin-top: 10px;
-              width: 61px;
-              height: 25px;
+              margin-top: 3px;
+              margin-left: 20px;
+              width: 45px;
+              height: 20px;
               background: #0b0806;
               border-radius: 13px;
               font-size: 12px;

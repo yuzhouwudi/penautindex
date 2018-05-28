@@ -74,31 +74,16 @@
     </div>
 
     <ul class="nuts">
-      <li>
-        <img src="../assets/img/4_03.png" alt="">
-        <h1>奶油腰果</h1>
-        <p>双重美味浓郁奶香</p>
-        <h2>66<span>RMB</span></h2>
-      </li>
-      <li>
-        <img src="../assets/img/4_05.png" alt="">
-        <h1>奶油腰果</h1>
-        <p>双重美味浓郁奶香</p>
-        <h2>66<span>RMB</span></h2>
-      </li>
-      <li>
-        <img src="../assets/img/4_07.png" alt="">
-        <h1>奶油腰果</h1>
-        <p>双重美味浓郁奶香</p>
-        <h2>66<span>RMB</span></h2>
-      </li>
-      <li>
-        <img src="../assets/img/4_09.png" alt="">
-        <h1>奶油腰果</h1>
-        <p>双重美味浓郁奶香</p>
-        <h2>66<span>RMB</span></h2>
+      <li v-for="item in arr" :key="item.id">
+        <router-link :to="'/new?id='+item.id">
+          <img :src="item.img[0].url" alt="">
+        </router-link>
+        <h1>{{item.name}}</h1>
+        <h2>{{item.price}}<span>RMB</span></h2>
+        <button>BUY</button>
       </li>
     </ul>
+
 
   </div>
 </template>
@@ -112,13 +97,14 @@
         total: 0,
         currentPage: 1,
         size: 8,
+        arr:[]
       };
     },
     created(){
       this.$http.get('/api/index/discount/count').then(res => {
         this.total = res.body.total;
 //        console.log(res);
-      })
+      });
 
       this.$http.get('/api/index/discount/discount?nub=1&size=' + this.size).then(res => {
         let hot = [];
@@ -129,6 +115,13 @@
         });
         this.data = hot;
 //        console.log(hot);
+      });
+
+
+      this.$http.get('/api/index/discount/nut').then(res => {
+        res.body.forEach(val => val.img = JSON.parse(val.img))
+        this.arr = res.body;
+//        console.log(res);
       })
     },
 
@@ -345,10 +338,13 @@
       margin: 100px auto 50px;
       display: flex;
       li {
+        padding-top: 20px;
         width: calc(100% / 4);
-        height: 437px;
+        height: 350px;
         img {
-          width: 100%;
+          width: 200px;
+          margin: 0 auto;
+          height: 200px;
         }
         h1 {
           font-size: 20px;
@@ -373,6 +369,21 @@
         transform: translateY(-10px);
         box-shadow: 0 10px 10px 10px rgba(217, 217, 217, 0.5);
         transition: 0.5s;
+      }
+      button{
+        margin-top: 10px;
+        width: 45px;
+        height: 20px;
+        background: #0b0806;
+        border-radius: 13px;
+        font-size: 12px;
+        color: #fff;
+        border: none;
+        outline: none;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #ef4e4e;
       }
     }
 

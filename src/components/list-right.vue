@@ -23,7 +23,7 @@
         </ul>
       </div>
     </div>
-    <template v-if="arr.length">
+    <template v-if="arr.length" >
       <div class="right_bot" v-for="item in list">
         <div class="time">
           <p>订单编号: 1769816226</p>
@@ -83,13 +83,12 @@
           })
           this.$http.get('/api/index/list/display?dingdanid=' + val.id).then(res => {
 //            this.count.push(res.body[0]);
-            console.log(res.body)
+//            console.log(res.body)
+            this.list.push(res.body[0])
           })
 
         })
-
-
-
+//        console.log(this.list);
 
 
       })
