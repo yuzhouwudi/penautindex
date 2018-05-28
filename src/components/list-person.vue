@@ -90,7 +90,13 @@
       };
     },
     created(){
-      let id = 1
+      if (!localStorage.users) {
+        return
+      }
+      let users = JSON.parse(localStorage.users)
+      let id = users.id;
+
+
       this.$http.get('/api/index/person/person?id=' + id).then(res => {
 //        console.log(res);
         let body = res.body[0]

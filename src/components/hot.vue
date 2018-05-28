@@ -124,7 +124,7 @@
       this.$http.get('/api/index/hot/nut').then(res => {
         res.body.forEach(val => val.img = JSON.parse(val.img))
         this.arr = res.body;
-        console.log(res);
+//        console.log(res);
       })
 
 

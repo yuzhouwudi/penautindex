@@ -151,8 +151,7 @@
   export default {
     data(){
       return {
-
-        count: 0,
+        count: 1,
         data: '',
         img: {},
         img2: {},

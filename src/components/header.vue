@@ -46,7 +46,7 @@
 
         <div class="user">
           <span v-if="!users.img">?</span>
-          <img :src="users.img[0].url" alt="" v-if="users.img">
+          <img :src="users.img.url" alt="" v-if="users.img">
         </div>
 
         <p v-if="!users.name">未登录</p>
@@ -106,9 +106,12 @@
       if (localStorage.users) {
         let obj=JSON.parse(localStorage.users)
         if (obj.img) {
-          this.users.img = JSON.parse(obj.img)
+          this.users.img = JSON.parse(obj.img)[0]
+        }else{
+          this.users.img=[]
         }
         this.users.name = obj.name
+//        console.log(this.users.img);
       }
    },
 
