@@ -5,12 +5,12 @@
         <li @click="xuan($event)">
           <router-link to="" class="active">现有订单</router-link>
         </li>
-        <li @click="xuan($event)">
-          <router-link to="">成功订单</router-link>
-        </li>
-        <li @click="xuan($event)">
-          <router-link to="">已取消订单</router-link>
-        </li>
+        <!--<li @click="xuan($event)">-->
+          <!--<router-link to="">成功订单</router-link>-->
+        <!--</li>-->
+        <!--<li @click="xuan($event)">-->
+          <!--<router-link to="">已取消订单</router-link>-->
+        <!--</li>-->
       </ul>
       <div class="top_col">
         <p>商品信息</p>
@@ -23,26 +23,28 @@
         </ul>
       </div>
     </div>
-    <template v-if="arr.length" >
-      <div class="right_bot" v-for="item in list">
+    <template v-if="arr.length">
+      <div class="right_bot" v-for="(item,index) in arr">
         <div class="time">
           <p>订单编号: 1769816226</p>
           <p>下单时间：2017-12-01 10:09:53</p>
         </div>
         <div class="goods">
           <div class="tu">
-            <img src="../assets/img/goods1.png" alt="">
+            <img :src="img[index]" alt="">
           </div>
           <div class="desc">
-            <p>坚果核桃</p>
+            <p>{{name[index]}}</p>
             <p>MEI HUO YILP</p>
             <div class="taste">奶油味</div>
           </div>
           <ul class="goods_li">
-            <li>56.00</li>
-            <li>*1</li>
-            <li>56.00</li>
-            <li>{{status}}<br>交易详情</li>
+            <li>￥{{price[index]}}</li>
+            <li>*{{count[index]}}</li>
+            <li>{{(price[index] * count[index]).toFixed(2)}}</li>
+            <li v-if="item.status==0">{{status.a}}</li>
+            <li v-if="item.status==1">{{status.b}}</li>
+            <li v-if="item.status==2">{{status.c}}</li>
             <!--<li>删除订单</li>-->
           </ul>
         </div>
@@ -61,36 +63,60 @@
       return {
         arr: [],
         list: [],
-        status: '',
-        count: []
+        name: [],
+        price: [],
+        img: [],
+        count: [],
+        status: {
+          a: '未完成',
+          b: "已发货",
+          c: "已完成"
+        }
+
       }
     },
     created(){
 
-          if (!localStorage.users) {
+      if (!localStorage.users) {
         return
       }
       let users = JSON.parse(localStorage.users)
       let uid = users.id;
-      this.$http.get('/api/index/list/user?uid=' + uid).then(res => {
-        this.arr = res.body;
-//        console.log(this.arr);
-        this.arr.forEach(val => {
 
+      this.$http.get('/api/index/list/user?uid=' + uid).then(res => {
+//        let brr=[]
+//        console.log(this.arr);
+        res.body.forEach(val => {
+//          if (val.status !== 2) {
+            this.arr.push(val)   //user的订单
+//          }
+        })
+//        this.arr=brr
+          this.arr.forEach(val => {
           this.$http.get('/api/index/list/find?dingdanid=' + val.id).then(res => {
-            this.count.push(res.body[0]);
+            this.count.push(res.body[0].count);    //user的每个商品的数量
 //        console.log(res.body)
           })
           this.$http.get('/api/index/list/display?dingdanid=' + val.id).then(res => {
 //            this.count.push(res.body[0]);
 //            console.log(res.body)
-            this.list.push(res.body[0])
+            let gid=[]
+            gid.push(res.body[0].goodsid)
+            gid.forEach(val=>{
+              this.$http.get('/api/index/list/product?id=' + val).then(res => {
+//              console.log(res.body)
+                res.body[0].img = JSON.parse(res.body[0].img);
+                this.img.push(res.body[0].img[0].url)   //user的每个商品的单价，图片...
+                this.name.push(res.body[0].name)   //user的每个商品的单价，图片...
+                this.price.push(res.body[0].price)   //user的每个商品的单价，图片...
+              })
+            })
+
           })
 
         })
-//        console.log(this.list);
-
-
+//        console.log(this.price);
+//        console.log(this.arr)
       })
 
 
@@ -102,7 +128,10 @@
           val.classList.remove('active')
           e.target.classList.add('active')
         })
+
       },
+
+
     }
   }
 </script>
@@ -193,7 +222,7 @@
       }
       .goods {
         display: flex;
-
+        padding: 0 10px 20px;
         .tu {
           width: 157px;
           img {

@@ -40,7 +40,7 @@
         <h5>Quality life one nut per day</h5>
         <h6>RMB<span>{{item.price}}</span></h6>
         <p>RMB:110</p>
-        <button>BUY NOW</button>
+        <button @click="addbuycar(item)">BUY NOW</button>
       </div>
       <div class="xin_right">
         <router-link :to="'/new?id='+item.id">
@@ -57,7 +57,7 @@
         </router-link>
         <p>{{item.name}}</p>
         <h1>RMB<span>{{item.price}}</span></h1>
-        <button>BUY</button>
+        <button @click="addbuycar(item)">BUY</button>
       </div>
 
     </div>
@@ -111,7 +111,7 @@
             <div class="xin_left">
               <h6>RMB<span>{{item.price}}</span></h6>
               <p>RMB:110</p>
-              <button>BUY NOW</button>
+              <button @click="addbuycar(item)">BUY NOW</button>
             </div>
           </div>
         </div>
@@ -127,7 +127,7 @@
               <div class="xin_left bot">
                 <h6>RMB<span>{{item.price}}</span></h6>
                 <p>RMB:110</p>
-                <button>BUY NOW</button>
+                <button @click="addbuycar(item)">BUY NOW</button>
               </div>
             </div>
             <div class="pic_left">
@@ -155,7 +155,7 @@
         <div class="imgbot">
           <span> {{item.name}}</span>
           <div>
-            <div> {{item.price}}<span>RMB </span><button> BUY</button></div>
+            <div> {{item.price}}<span>RMB </span><button @click="addbuycar(item)"> BUY</button></div>
           </div>
         </div>
       </li>
@@ -171,7 +171,7 @@
         <div class="imgbot">
           <span> {{item.name}}</span>
           <div>
-            <div> {{item.price}}<span>RMB </span><button> BUY</button></div>
+            <div> {{item.price}}<span>RMB </span><button @click="addbuycar(item)"> BUY</button></div>
           </div>
         </div>
       </li>
@@ -190,7 +190,8 @@
           crr:[],
           drr:[],
           err:[],
-          frr:[]
+          frr:[],
+          count: 0,
       }
     },
 
@@ -236,6 +237,45 @@
         this.frr = res.body;
 //        console.log(res);
       })
+
+    },
+
+
+
+    methods: {
+      addbuycar(data){
+//        console.log(data);
+        if (!localStorage.users) {
+          this.$message.error('请先登录')
+          return
+        }
+        let users = JSON.parse(localStorage.users)
+
+        let obj = {
+          name: data.name,
+          count: 1,
+          pid: data.id,
+          img: data.img[0].url,
+          uid: users.id,
+          price: data.price
+        }
+
+        this.$http.post('/api/index/buycar/addbuycar', obj, {
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then(res => {
+          if (res.body=='ok') {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            });
+          }else{
+            this.$message.error('添加失败')
+          }
+        })
+      }
+
 
     }
   }

@@ -52,39 +52,7 @@
       </div>
     </div>
 
-    <div class="tou">
-      <div class="pic">
-        <img src="../assets/img/pic.png" alt="">
-        <h1>坚果专区</h1>
-      </div>
-    </div>
 
-    <ul class="nuts">
-      <li>
-        <img src="../assets/img/4_03.png" alt="">
-        <h1>奶油腰果</h1>
-        <p>双重美味浓郁奶香</p>
-        <h2>66<span>RMB</span></h2>
-      </li>
-      <li>
-        <img src="../assets/img/4_05.png" alt="">
-        <h1>奶油腰果</h1>
-        <p>双重美味浓郁奶香</p>
-        <h2>66<span>RMB</span></h2>
-      </li>
-      <li>
-        <img src="../assets/img/4_07.png" alt="">
-        <h1>奶油腰果</h1>
-        <p>双重美味浓郁奶香</p>
-        <h2>66<span>RMB</span></h2>
-      </li>
-      <li>
-        <img src="../assets/img/4_09.png" alt="">
-        <h1>奶油腰果</h1>
-        <p>双重美味浓郁奶香</p>
-        <h2>66<span>RMB</span></h2>
-      </li>
-    </ul>
 
   </div>
 </template>
@@ -244,6 +212,7 @@
     .jiage {
       width: 100%;
       height: auto;
+
       ul {
         width: 100%;
         height: 100%;

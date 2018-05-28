@@ -38,12 +38,12 @@
                 <p>{{item.name}}</p>
                 <h6>RMB<span>{{item.price}}</span></h6>
                 <div class="xiaoguo">
-                  <router-link to="">
+                  <a @click="addbuycar(item)">
                     <div class="go">购买</div>
-                  </router-link>
+                  </a>
 
-                  <router-link to="">
-                    <div class="shou">收藏</div>
+                  <router-link :to="'/new?id='+item.id">
+                    <div class="shou">查看</div>
                   </router-link>
                 </div>
               </div>
@@ -99,7 +99,8 @@
         total: 0,
         currentPage: 1,
         size: 8,
-        arr:[]
+        arr:[],
+        count: 0,
       };
     },
     created(){
@@ -151,7 +152,44 @@
             return b.price - a.price
           })
         }
+      },
+
+      addbuycar(data){
+//        console.log(data);
+        if (!localStorage.users) {
+          this.$message.error('请先登录')
+          return
+        }
+        let users = JSON.parse(localStorage.users)
+
+        let obj = {
+          name: data.name,
+          count: 1,
+          pid: data.id,
+          img: data.img[0].url,
+          uid: users.id,
+          price: data.price
+        }
+
+        this.$http.post('/api/index/buycar/addbuycar', obj, {
+          headers: {
+            "content-type": "application/json"
+          }
+        }).then(res => {
+          if (res.body=='ok') {
+            this.$message({
+              message: '添加成功',
+              type: 'success'
+            });
+          }else{
+            this.$message.error('添加失败')
+          }
+        })
       }
+
+
+
+
     },
 
 
