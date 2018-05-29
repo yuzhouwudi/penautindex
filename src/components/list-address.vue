@@ -3,8 +3,9 @@
   <div class="max">
     <div class="top">
 
-      <a class="left">您的地址 </a>
-      <div     class="el-icon-plus"> </div>
+      <router-link to="/list/add" class="left">您的地址 </router-link>
+      <router-link to="/list/addad" class="left">add </router-link>
+      <div class="el-icon-plus"> </div>
     </div>
     <el-table
       :data="arr"

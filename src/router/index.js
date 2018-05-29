@@ -11,6 +11,8 @@ import List from '@/components/list'
 import Listright from '@/components/list-right'
 import Listperson from '@/components/list-person'
 import Listaddress from '@/components/list-address'
+import Listaddr from '@/components/list-addadd'
+import Listaddres from '@/components/addre'
 import Car from '@/components/car'
 
 
@@ -58,6 +60,14 @@ export default new Router({
         {
           path: 'address',
           component: Listaddress,
+        },
+        {
+          path: 'add',
+          component: Listaddr,
+        },
+        {
+          path: 'addad',
+          component: Listaddres,
         },
       ]
     },

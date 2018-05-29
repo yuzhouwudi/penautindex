@@ -13,13 +13,13 @@
     <div class="sale">
       <div class="lit_box">
         <div class="quan">
-          <img src="../assets/img/sale.png" alt="">
+          <img src="../assets/img/aa_03.png" alt="">
         </div>
         <div class="quan">
-          <img src="../assets/img/sale.png" alt="">
+          <img src="../assets/img/aa_04.png" alt="">
         </div>
         <div class="quan">
-          <img src="../assets/img/sale.png" alt="">
+          <img src="../assets/img/aa_05.png" alt="">
         </div>
       </div>
     </div>
@@ -331,7 +331,7 @@
         height: 143px;
         display: flex;
         position: absolute;
-        top: -30px;
+        top: -47px;
         left: 150px;
         /*z-index: 200;*/
         .quan {

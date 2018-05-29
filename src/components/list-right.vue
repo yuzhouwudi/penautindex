@@ -5,11 +5,11 @@
         <li @click="xuan($event)">
           <router-link to="" class="active">现有订单</router-link>
         </li>
+        <li @click="xuan($event)">
+          <router-link to="">成功订单</router-link>
+        </li>
         <!--<li @click="xuan($event)">-->
-          <!--<router-link to="">成功订单</router-link>-->
-        <!--</li>-->
-        <!--<li @click="xuan($event)">-->
-          <!--<router-link to="">已取消订单</router-link>-->
+        <!--<router-link to="">已取消订单</router-link>-->
         <!--</li>-->
       </ul>
       <div class="top_col">
@@ -24,7 +24,13 @@
       </div>
     </div>
     <template v-if="arr.length">
+
+
       <div class="right_bot" v-for="(item,index) in arr">
+
+
+
+
         <div class="time">
           <p>订单编号: 1769816226</p>
           <p>下单时间：2017-12-01 10:09:53</p>
@@ -48,7 +54,12 @@
             <!--<li>删除订单</li>-->
           </ul>
         </div>
+
+
+
       </div>
+
+
     </template>
 
     <div class="none" v-else>
@@ -71,7 +82,8 @@
           a: '未完成',
           b: "已发货",
           c: "已完成"
-        }
+        },
+
 
       }
     },
@@ -84,15 +96,9 @@
       let uid = users.id;
 
       this.$http.get('/api/index/list/user?uid=' + uid).then(res => {
-//        let brr=[]
 //        console.log(this.arr);
-        res.body.forEach(val => {
-//          if (val.status !== 2) {
-            this.arr.push(val)   //user的订单
-//          }
-        })
-//        this.arr=brr
-          this.arr.forEach(val => {
+        this.arr = res.body   //user的订单
+        this.arr.forEach(val => {
           this.$http.get('/api/index/list/find?dingdanid=' + val.id).then(res => {
             this.count.push(res.body[0].count);    //user的每个商品的数量
 //        console.log(res.body)
@@ -100,9 +106,9 @@
           this.$http.get('/api/index/list/display?dingdanid=' + val.id).then(res => {
 //            this.count.push(res.body[0]);
 //            console.log(res.body)
-            let gid=[]
+            let gid = []
             gid.push(res.body[0].goodsid)
-            gid.forEach(val=>{
+            gid.forEach(val => {
               this.$http.get('/api/index/list/product?id=' + val).then(res => {
 //              console.log(res.body)
                 res.body[0].img = JSON.parse(res.body[0].img);
@@ -119,15 +125,92 @@
 //        console.log(this.arr)
       })
 
-
     },
     methods: {
       xuan(e){
+
         let xuan = this.$refs.xuan.querySelectorAll('a')
         xuan.forEach(val => {
           val.classList.remove('active')
           e.target.classList.add('active')
         })
+
+        if (e.target.text == '成功订单') {
+          this.arr = [],
+          this.count = [],
+          this.img = [],
+          this.price = [],
+          this.name = []
+
+//          console.log(this.count);
+          if (!localStorage.users) {
+            return
+          }
+          let users = JSON.parse(localStorage.users)
+          let uid = users.id;
+
+          this.$http.get('/api/index/list/user?uid=' + uid).then(res => {
+            res.body.forEach(val => {
+              if (val.status == 2) {
+                this.arr.push(val)
+              }
+            })
+            this.arr.forEach(val => {
+              this.$http.get('/api/index/list/find?dingdanid=' + val.id).then(res => {
+                this.count.push(res.body[0].count);    //user的每个商品的数量
+              })
+              this.$http.get('/api/index/list/display?dingdanid=' + val.id).then(res => {
+                let gid = []
+                gid.push(res.body[0].goodsid)
+                gid.forEach(val => {
+                  this.$http.get('/api/index/list/product?id=' + val).then(res => {
+                    res.body[0].img = JSON.parse(res.body[0].img);
+                    this.img.push(res.body[0].img[0].url)   //user的每个商品的单价，图片...
+                    this.name.push(res.body[0].name)   //user的每个商品的单价，图片...
+                    this.price.push(res.body[0].price)   //user的每个商品的单价，图片...
+                  })
+                })
+
+              })
+
+            })
+          })
+        } else {
+          this.arr = [],
+          this.count = [],
+          this.img = [],
+          this.price = [],
+          this.name = []
+          if (!localStorage.users) {
+            return
+          }
+          let users = JSON.parse(localStorage.users)
+          let uid = users.id;
+
+          this.$http.get('/api/index/list/user?uid=' + uid).then(res => {
+            this.arr = res.body   //user的订单
+            this.arr.forEach(val => {
+              this.$http.get('/api/index/list/find?dingdanid=' + val.id).then(res => {
+                this.count.push(res.body[0].count);    //user的每个商品的数量
+              })
+              this.$http.get('/api/index/list/display?dingdanid=' + val.id).then(res => {
+                let gid = []
+                gid.push(res.body[0].goodsid)
+                gid.forEach(val => {
+                  this.$http.get('/api/index/list/product?id=' + val).then(res => {
+                    res.body[0].img = JSON.parse(res.body[0].img);
+                    this.img.push(res.body[0].img[0].url)   //user的每个商品的单价，图片...
+                    this.name.push(res.body[0].name)   //user的每个商品的单价，图片...
+                    this.price.push(res.body[0].price)   //user的每个商品的单价，图片...
+                  })
+                })
+
+              })
+
+            })
+
+          })
+        }
 
       },
 
@@ -269,11 +352,11 @@
           }
         }
       }
-      .goods:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 5px 5px 5px rgba(217, 217, 217, 0.5);
-        transition: 0.5s;
-      }
+      /*<!--.goods:hover {-->*/
+        /*<!--transform: translateY(-5px);-->*/
+        /*<!--box-shadow: 0 5px 5px 5px rgba(217, 217, 217, 0.5);-->*/
+        /*<!--transition: 0.5s;-->*/
+      /*<!--}-->*/
     }
     .none {
       margin: 50px;

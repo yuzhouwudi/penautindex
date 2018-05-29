@@ -104,8 +104,9 @@
         if (body.img) {
           body.img = JSON.parse(body.img)
         }
-        this.ruleForm2 = body
-//        console.log(this.ruleForm);
+        this.ruleForm2.name = body.name
+        this.ruleForm2.img = body.img
+//        console.log(this.ruleForm2);
       })
     },
     methods: {
@@ -120,7 +121,11 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
 //            console.log(this.ruleForm2);
-            let id = 1
+            if (!localStorage.users) {
+              return
+            }
+            let users = JSON.parse(localStorage.users)
+            let id = users.id;
             let obj = Object.assign({}, this.ruleForm2)
             obj.img = JSON.stringify(obj.img)
 //            console.log(obj);
