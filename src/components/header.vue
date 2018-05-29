@@ -26,7 +26,7 @@
       <br>
       <input type="text" class="input" placeholder="请输入您的密码"><br>
       <input type="text" class="input" placeholder="请再次输入您的密码">
-      <button class="deng">马上登录</button>
+      <button class="deng">马上注册</button>
     </div>
 
     <div class="top">

@@ -5,7 +5,7 @@
     <el-form :model="ruleForm2" status-icon :rules="rules2" ref="ruleForm2" label-width="100px" class="demo-ruleForm">
 
 
-      <el-form-item label="图片上传" prop="img">
+      <el-form-item label="设置头像" prop="img">
 
         <el-upload
           action="/api/index/person/upload"
@@ -102,7 +102,7 @@
         let body = res.body[0]
 //        console.log(body.img);
         if (body.img) {
-          body.img =  JSON.parse(body.img)
+          body.img = JSON.parse(body.img)
         }
         this.ruleForm2 = body
 //        console.log(this.ruleForm);
@@ -110,6 +110,13 @@
     },
     methods: {
       submitForm(formName) {
+        if (!localStorage.users) {
+          this.$message({
+            message: '请先登录',
+            type: 'warning'
+          });
+          return
+        }
         this.$refs[formName].validate((valid) => {
           if (valid) {
 //            console.log(this.ruleForm2);
@@ -128,8 +135,8 @@
                   message: '修改成功',
                   type: 'success'
                 });
-                this.ruleForm2.pass=''
-                this.ruleForm2.checkPass=''
+                this.ruleForm2.pass = ''
+                this.ruleForm2.checkPass = ''
               } else {
                 this.$message.error('系统错误');
               }

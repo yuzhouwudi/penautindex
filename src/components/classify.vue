@@ -339,6 +339,7 @@
                 width: 175px;
                 height: 125px;
                 background: #fff;
+                overflow: hidden;
                 margin: 20px auto 0;
                 img {
                   height: 100%;
@@ -396,10 +397,12 @@
                   background: yellow;
                   font-size: 14px;
                   float: left;
+                  cursor: pointer;
                 }
                 .shou {
                   width: 50%;
                   height: 100%;
+                  color: #000;
                   /*background: yellow;*/
                   font-size: 14px;
                   float: left;
