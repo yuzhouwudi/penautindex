@@ -3,9 +3,11 @@
   <div class="max">
     <div class="top">
 
-      <router-link to="/list/add" class="left">您的地址 </router-link>
-      <router-link to="/list/addad" class="left">add </router-link>
-      <div class="el-icon-plus"> </div>
+      <!--<router-link to="/list/addad" class="left">您的地址 </router-link>-->
+      <div class="left">您的地址</div>
+      <!--<router-link to="/list/add">-->
+        <!--<div class="el-icon-plus"></div>-->
+      <!--</router-link>-->
     </div>
     <el-table
       :data="arr"
@@ -13,7 +15,8 @@
 
       <el-table-column
         label="省份"
-        width="100">
+        width="100"
+        align="center">
         <template slot-scope="scope">
           <span style="margin-left: 10px">{{ scope.row.provice }}</span>
         </template>
@@ -21,7 +24,8 @@
 
       <el-table-column
         label="市"
-        width="100">
+        width="100"
+        align="center">
         <template slot-scope="scope">
 
           <span style="margin-left: 10px">{{scope.row.city}}</span>
@@ -30,27 +34,30 @@
 
       <el-table-column
         label="县区"
-        width="100">
+        width="100"
+        align="center">
         <template slot-scope="scope">
-          <span style="margin-left: 10px" >{{scope.row.town}}</span>
+          <span style="margin-left: 10px">{{scope.row.town}}</span>
 
         </template>
       </el-table-column>
 
       <el-table-column
         label="具体地址"
-        width="250">
+        width="250"
+        align="center">
         <template slot-scope="scope">
-          <span style="margin-left: 10px" >{{scope.row.address}}</span>
+          <span style="margin-left: 10px">{{scope.row.address}}</span>
 
         </template>
       </el-table-column>
 
-      <el-table-column label="操作">
+      <el-table-column label="操作" align="center">
         <template slot-scope="scope">
           <el-button
             size="mini"
-            @click="del(scope.row.id)">删除</el-button>
+            @click="del(scope.row.id)">删除
+          </el-button>
         </template>
       </el-table-column>
 
@@ -63,7 +70,7 @@
     name: 'list-address',
     data(){
       return {
-        arr:[]
+        arr: [],
       }
     },
 
@@ -72,23 +79,32 @@
         return
       }
       let users = JSON.parse(localStorage.users)
-      let id =users.id;
-      this.$http.get('/api/index/list/address?id='+id).then(res=>{
+      let id = users.id;
+      this.$http.get('/api/index/list/address?id=' + id).then(res => {
 //        console.log(res);
-        this.arr=res.body;
+        this.arr = res.body;
+//        console.log(this.arr);
+
+
       })
+
+
     },
-    methods:{
+    methods: {
       del(id){
-        this.$http.get('api/index/list/del?id='+id).then(res=>{
-          if(res.body=='ok'){
-            alert('删除成功')
-          }else{
-            alert('删除失败')
+        this.$http.get('api/index/list/del?id=' + id).then(res => {
+          if (res.body == 'ok') {
+            this.$message({
+              message: '删除成功',
+              type: 'success',
+              center: true
+            });
+          } else {
+            this.$message.error('删除失败')
           }
-          this.arr.forEach((val,index)=>{
-            if(val.id==id){
-              this.arr.splice(index,1)
+          this.arr.forEach((val, index) => {
+            if (val.id == id) {
+              this.arr.splice(index, 1)
             }
 
           })
@@ -97,28 +113,35 @@
         })
       }
 
-    }
+    },
+
   }
 </script>
 <style scoped lang='scss'>
-  .max{
-    .top{
-      width:100%;
-      height:50px;
+  .max {
+    .top {
+      width: 100%;
+      height: 50px;
       box-sizing: border-box;
-      padding: 0 20px;
+      padding: 0 37px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      .left{
-        font-size: 25px;
-        font-weight: bold;
-
+      .left {
+        font-size: 18px;
+        font-weight: 600;
+        color: #A3A5A3;
+        text-align: center;
       }
-      .right{
+      .el-icon-plus{
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .right {
         font-weight: bold;
         font-size: 20px;
       }
     }
+
   }
 </style>

@@ -2,7 +2,7 @@
   <div id="app">
    <heads></heads>
     <router-view/>
-      <foots></foots>
+   <foots></foots>
   </div>
 </template>
 
@@ -13,7 +13,7 @@ export default {
   name: 'App',
     components:{
          heads,
-        foots
+         foots
     }
 
 }

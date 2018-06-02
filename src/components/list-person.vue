@@ -13,7 +13,7 @@
           :on-success="handleSuccess"
           :on-remove="handleRemove"
           :file-list="ruleForm2.img"
-        >
+          style="width: 30%">
           <i class="el-icon-plus"></i>
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
@@ -22,19 +22,19 @@
 
       </el-form-item>
 
-      <el-form-item label="名称" prop="name">
+      <el-form-item label="名称" prop="name" style="width: 40%">
         <el-input v-model="ruleForm2.name"></el-input>
       </el-form-item>
 
 
-      <el-form-item label="新密码" prop="pass">
+      <el-form-item label="新密码" prop="pass" style="width: 50%">
         <el-input type="password" v-model="ruleForm2.pass" auto-complete="off"></el-input>
       </el-form-item>
-      <el-form-item label="确认密码" prop="checkPass">
+      <el-form-item label="确认密码" prop="checkPass" style="width: 50%">
         <el-input type="password" v-model="ruleForm2.checkPass" auto-complete="off"></el-input>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item style="width: 48%;margin-top: 60px">
         <el-button type="primary" @click="submitForm('ruleForm2')">提交</el-button>
         <el-button @click="resetForm('ruleForm2')">重置</el-button>
       </el-form-item>

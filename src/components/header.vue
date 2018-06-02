@@ -9,7 +9,7 @@
       <img src="../assets/img/song.png" alt="">
       <div class="sin"><h1>登录</h1></div>
       <label>账号：</label>
-      <input type="tel" class="input" placeholder="请输入手机号" v-model="phone"><br>
+      <input type="tel" class="input first" placeholder="请输入手机号" v-model="phone"><br>
       <label>密码：</label>
       <input type="text" class="input" placeholder="请输入您的密码" v-model="pass">
       <button class="deng" @click="loginsub">马上登录</button>
@@ -20,13 +20,16 @@
       <a @click="nono"><span class="iconfont icon-shachu-xue"></span></a>
       <img src="../assets/img/song.png" alt="">
       <div class="sin"><h1>注册</h1></div>
-      <input type="text" class="input" placeholder="请输入手机号"><br>
-      <input type="text" class="input" placeholder="短信校验码" style="width: 105px">
-      <button class="yan">获取短信校验码</button>
       <br>
-      <input type="text" class="input" placeholder="请输入您的密码"><br>
-      <input type="text" class="input" placeholder="请再次输入您的密码">
-      <button class="deng">马上注册</button>
+
+      <input type="text" class="input" placeholder="请输入手机号" v-model="tel"><br>
+      <!--<input type="text" class="input" placeholder="短信校验码" style="width: 105px" v-model="mess">-->
+      <!--<button class="yan" @click="messin">获取短信校验码</button>-->
+
+      <input type="text" class="input" placeholder="请输入您的密码" v-model="pas"><br>
+      <input type="text" class="input" placeholder="请再次输入您的密码" v-model="pastwo">
+      <br>
+      <button class="deng" @click="entersub">马上注册</button>
     </div>
 
     <div class="top">
@@ -98,19 +101,29 @@
         },
 
         phone: '',
-        pass: ''
+        pass: '',
+        tel:'',
+        mess:'',
+        pas:'',
+        pastwo:''
 
       }
     },
     created(){
       if (localStorage.users) {
+//        console.log(localStorage.users);
         let obj=JSON.parse(localStorage.users)
         if (obj.img) {
           this.users.img = JSON.parse(obj.img)[0]
         }else{
           this.users.img=[]
         }
-        this.users.name = obj.name
+        if(obj.name){
+          this.users.name = obj.name
+        }else{
+          this.users.name=obj.phone
+        }
+
 //        console.log(this.users.img);
       }
    },
@@ -140,6 +153,7 @@
 
     beforeRouteEnter(to, from, next){
       let path = to.fullPath;
+
       next(vm => {
         let index = vm.items.findIndex(val => val.to === path);
         if (index == -1) {
@@ -153,6 +167,20 @@
 
 
     methods: {
+//      messin(){
+//        let tel=this.tel
+//        let content='用户您好。【极速数据】'
+//        jQuery.ajax({
+//          url: `http://api.jisuapi.com/sms/send?appkey=f1c1640838697b20&mobile=${tel}&content=${content}`,
+//          dataType: 'JSONP',
+//          success: (a) => {
+//          console.log(a);
+////            let arr = a.result
+//
+////          console.log(this.province);
+//          }
+//        })
+//      },
       open4(){
         const h = this.$createElement;
         this.$msgbox({
@@ -170,6 +198,8 @@
               message: '退出成功!'
             });
             localStorage.users=''
+//            this.users.name=''
+//            this.users.img=''
             this.$router.go(0)
           }).catch(() => {
 
@@ -179,13 +209,29 @@
 
       loginsub(){
         if (!this.phone) {
-          alert("请输入手机号码")
+          this.$message({
+            type: 'warning',
+            message: '请输入手机号码'
+          });
+//          alert("请输入手机号码")
         } else if (!/^1[3-9]\d{9}$/.test(this.phone)) {
-          alert("请输入正确的手机号码")
+          this.$message({
+            type: 'error',
+            message: '请输入正确的手机号码'
+          });
+//          alert("请输入正确的手机号码")
         } else if (!this.pass) {
-          alert("请输入密码")
+          this.$message({
+            type: 'warning',
+            message: '请输入密码'
+          });
+//          alert("请输入密码")
         } else if (this.pass.length > 8) {
-          alert("密码不能超过8位")
+          this.$message({
+            type: 'warning',
+            message: '密码不能超过8位'
+          });
+//          alert("密码不能超过8位")
         } else {
           let obj = {}
           obj.phone = this.phone
@@ -206,7 +252,6 @@
               });
               this.phone = ''
               this.pass = ''
-              this.user = true
               this.$refs.login.style.display = 'none'
               this.flag = false
               localStorage.users = JSON.stringify(res.body[0])
@@ -217,20 +262,81 @@
         }
       },
 
+      entersub(){
+        if (!this.tel) {
+          this.$message({
+            type: 'warning',
+            message: '请输入手机号码'
+          });
+        } else if (!/^1[3-9]\d{9}$/.test(this.tel)) {
+          this.$message({
+            type: 'error',
+            message: '请输入正确的手机号码'
+          });
+        } else if (!this.pas) {
+          this.$message({
+            type: 'warning',
+            message: '请输入密码'
+          });
+        } else if (this.pas.length > 8) {
+          this.$message({
+            type: 'warning',
+            message: '密码不能超过8位'
+          });
+        }else if(this.pastwo!=this.pas){
+          this.$message({
+            type: 'error',
+            message: '两次密码输入不一致'
+          });
+          }else {
+            let obj = {}
+            obj.phone = this.tel
+            obj.pass = this.pas
+            this.$http.post('/api/index/sign/enter', obj, {
+              headers: {
+                "content-type": "application/json"
+              }
+            }).then(res => {
+//            console.log(res);
+              if (res.body=='no') {
+                this.$message.error('注册失败');
+              } else {
+                this.$message({
+                  message: '注册成功',
+                  type: 'success',
+                  center: true
+                });
+                this.tel = ''
+                this.pas = ''
+                this.pastwo = ''
+                this.$refs.zhu.style.display = 'none'
+                this.flag = false
+              }
+            })
+
+        }
+      },
+
 
       login(){
         this.flag = true
         this.$refs.login.style.display = 'block'
         this.$refs.login.classList.add('zoomIn')
         this.$refs.login.classList.remove('zoomOut')
+        document.body.style.height = '100vh'
+        document.body.style['overflow-y'] = 'hidden'
       },
       none(){
         this.$refs.login.classList.remove('zoomIn')
         this.$refs.login.classList.add('zoomOut')
+        document.body.style.height = 'unset'
+        document.body.style['overflow-y'] = 'auto'
         setTimeout(() => {
           this.$refs.login.style.display = 'none'
         }, 200)
         this.flag = false
+        this.phone = ''
+        this.pass = ''
       },
 
       zhu(){
@@ -238,13 +344,19 @@
         this.$refs.zhu.style.display = 'block'
         this.$refs.zhu.classList.add('zoomIn')
         this.$refs.zhu.classList.remove('zoomOut')
+        document.body.style.height = '100vh'
+        document.body.style['overflow-y'] = 'hidden'
       },
       nono(){
         this.$refs.zhu.classList.remove('zoomIn')
         this.$refs.zhu.classList.add('zoomOut')
+        document.body.style.height = 'unset'
+        document.body.style['overflow-y'] = 'auto'
         setTimeout(() => {
           this.$refs.zhu.style.display = 'none'
         }, 200)
+        this.phone = ''
+        this.pass = ''
         this.flag = false
       },
 
@@ -264,10 +376,14 @@
 </script>
 
 <style scoped lang="scss">
+  .animated {
+    animation-duration: .5s;
+    animation-fill-mode: both;
+  }
   #zhezhao {
     width: 100%;
     height: 100%;
-    background: rgba(246, 242, 241, 0.8);
+    background: rgba(0, 0, 0, 0.5);
     position: fixed;
     top: 0;
     left: 0;
@@ -275,8 +391,8 @@
   }
 
   #enter {
-    width: 496px;
-    height: 354px;
+    width: 480px;
+    height: 330px;
     background: #f2f42a;
     position: absolute;
     top: 30%;
@@ -286,12 +402,13 @@
     display: none;
     a {
       position: absolute;
-      top: -60px;
-      left: 440px;
-      font-size: 100px;
+      top: -30px;
+      left: 430px;
+      font-size: 70px;
       color: #fff;
+      cursor: pointer;
       span {
-        font-size: 40px;
+        font-size: 35px;
       }
     }
     img {
@@ -321,7 +438,7 @@
       margin-right: 10px;
     }
     input {
-      margin-top: 50px;
+      margin-top: 40px;
       width: 278px;
       height: 37px;
       border-radius: 30px;
@@ -329,12 +446,15 @@
       outline: none;
       padding-left: 15px;
     }
+    input.first{
+      margin-top: 60px;
+    }
     .deng {
       width: 290px;
       height: 40px;
       background: #000;
       border-radius: 35px;
-      margin-top: 50px;
+      margin-top: 40px;
       margin-left: 60px;
       color: #fff;
       border: none;
@@ -348,13 +468,14 @@
       span {
         font-size: 16px;
         color: #c5885c;
+        cursor: pointer;
       }
     }
   }
 
   #login {
-    width: 496px;
-    height: 364px;
+    width: 480px;
+    height: 340px;
     background: #f2f42a;
     position: absolute;
     border-radius: 15px;
@@ -365,11 +486,11 @@
     a {
       position: absolute;
       top: -60px;
-      left: 440px;
+      left: 420px;
       font-size: 100px;
       color: #fff;
       span {
-        font-size: 40px;
+        font-size: 35px;
       }
     }
     img {
@@ -449,6 +570,7 @@
         overflow: hidden;
         color: #9f8f8f;
         font-size: 15px;
+        cursor: pointer;
       }
       & a:hover {
         background: #ffff00;
@@ -491,6 +613,12 @@
           color: #8A7A7A;
         }
       }
+      a:hover{
+        color: #f42a42;
+      }
+      .icon-gouwuche:hover{
+        color: #f42a42;
+      }
       p {
         font-size: 25px;
       }
@@ -517,6 +645,7 @@
         font-weight: 200;
         margin-left: 20px;
       }
+
 
     }
   }

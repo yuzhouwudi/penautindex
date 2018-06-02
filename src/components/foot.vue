@@ -1,27 +1,45 @@
 <template>
   <footer>
     <div class="zhezhao">
-      <ul class="left">
-        <span> SERVICE</span>
-        <li>购物流程</li>
-        <li>退货流程</li>
-        <li>配送说明</li>
-        <li>在线客服</li>
-      </ul>
-      <ul class="mid">
-        <span>FIND US</span>
-        <li>THRNED GLOBAL</li>
-        <li>微信公众号</li>
-        <li>购物官方APP</li>
-        <li>热线：400-880-0086</li>
-      </ul>
-      <div class="right">
-        <div class="topset"> CONTACT US
-        </div>
-        <input type="text" placeholder="NAME" style="padding-left: 15px">
-        <input type="text" placeholder="E-MAIL" style="padding-left: 15px">
-        <input type="text" placeholder="YOUR MESSAGE" style="padding-left: 15px">
-        <button class="send">SEND</button>
+      <div id="text">
+        <ul class="left">
+          <li class="title"> SERVICE</li>
+          <li>购物流程</li>
+          <li>退货流程</li>
+          <li>配送说明</li>
+          <li>在线客服</li>
+        </ul>
+
+        <ul class="mid ">
+          <li class="title">PAYMENT</li>
+          <li>Quick payment</li>
+          <li>快捷支付</li>
+          <li>支付宝支付</li>
+          <li>银行卡支付</li>
+        </ul>
+        <!--<div class="right">-->
+          <!--<div class="topset"> CONTACT US-->
+          <!--</div>-->
+          <!--<input type="text" placeholder="NAME" style="padding-left: 15px">-->
+          <!--<input type="text" placeholder="E-MAIL" style="padding-left: 15px">-->
+          <!--<input type="text" placeholder="YOUR MESSAGE" style="padding-left: 15px">-->
+          <!--<button class="send">SEND</button>-->
+        <!--</div>-->
+        <ul class="mid">
+          <li class="title">LOGISTICS</li>
+          <li>Free policy</li>
+          <li>物流配送服务</li>
+          <li>签收验货</li>
+          <li>物流查询</li>
+        </ul>
+        <ul class="mid contact">
+          <li class="title">FIND US</li>
+          <li>Welcome contact</li>
+          <li>微信公众号</li>
+          <li>购物官方APP</li>
+          <li>热线：400-880-0086</li>
+        </ul>
+
       </div>
     </div>
   </footer>
@@ -39,10 +57,10 @@
   footer {
     margin: 0 auto;
     width: 100%;
-    height: 460px;
+    height: 380px;
     /*background: rgba(0,0,0,0.5);*/
     display: flex;
-    background-image: url("../assets/img/foot.jpg");
+    background-image: url("../assets/img/foot_01.png");
     background-size: cover;
     position: relative;
     .zhezhao {
@@ -52,14 +70,21 @@
       position: absolute;
       left: 0;
       top: 0;
-      display: flex;
+
+      #text{
+        width: 1100px;
+        height: 100%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-around;
+      }
       .left {
         width: 180px;
         height: 100%;
         box-sizing: border-box;
-        padding: 136px 0;
-        margin-left: 120px;
-        span {
+        padding: 110px 0;
+        /*margin-left: 120px;*/
+       .title {
           display: block;
           font-size: 18px;
           color: #ffffff;
@@ -68,17 +93,17 @@
         li {
           margin-bottom: 10px;
           color: #fff;
-          font-size: 18px;
+          font-size: 16px;
           text-align: center;
         }
       }
       .mid {
-        width: 300px;
+        width: 250px;
         height: 100px;
         box-sizing: border-box;
-        padding: 130px 0;
+        padding: 110px 0;
 
-        span {
+        .title {
           display: block;
           font-size: 18px;
           color: #ffffff;
@@ -88,10 +113,17 @@
           margin-left: 112px;
           margin-bottom: 10px;
           color: #fff;
-          font-size: 18px;
+          font-size: 16px;
           text-align: left;
         }
+
       }
+      .mid.contact{
+        width: 300px;
+      }
+
+
+
       .right {
         width: 418px;
         text-align: left;

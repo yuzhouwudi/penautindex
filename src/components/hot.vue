@@ -3,8 +3,9 @@
     <div class="top-img">
       <img src="../assets/img/2.png" alt="">
     </div>
-    <div class="size">
-      <p>首页&nbsp;/&nbsp;热门推销</p>
+    <div class="bread">
+      <router-link to="/" class="h1">首页 / </router-link>
+      <span>热门推销</span>
     </div>
     <div class="content">
       <div class="right">
@@ -205,14 +206,21 @@
       width: 100%;
       height: auto;
     }
-    .size {
+    .bread {
       width: 100%;
-      height: 75px;
-      p {
+      margin: 0 auto;
+      height: 60px;
+      line-height: 60px;
+      text-align: left;
+      font-weight: 400;
+      .h1 {
+        font-size: 18px;
+        color: #9d9d9d;
+      }
+      span {
         font-size: 16px;
-        padding-top: 20px;
-        text-align: left;
-        color: #737373;
+        color: #bcbcbc;
+        font-weight: 400;
       }
     }
     .content {
@@ -249,14 +257,14 @@
           ul {
             width: 100%;
             height: 100%;
+            margin-top: 40px;
             overflow: hidden;
             li {
               width: 246px;
               height: 305px;
               float: left;
               box-shadow: 1px 1px 3px 2px rgba(216, 216, 216, 0.4);
-              margin-top: 30px;
-              margin-right: 54px;
+              margin: 30px 20px 20px 30px;
               .tupian {
                 width: 175px;
                 height: 125px;
@@ -312,6 +320,7 @@
                   background: yellow;
                   font-size: 14px;
                   float: left;
+                  cursor: pointer;
                 }
                 .shou {
                   width: 50%;
@@ -319,6 +328,7 @@
                   /*background: yellow;*/
                   font-size: 14px;
                   float: left;
+                  color: #000;
                 }
               }
               &:hover .xiaoguo {

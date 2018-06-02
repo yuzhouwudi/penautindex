@@ -297,8 +297,10 @@
         width: 306px;
         height: 215px;
         position: absolute;
-        top: 120px;
-        left: 850px;
+        top: 50%;
+        margin-top: -105px;
+        right:50%;
+        margin-right: -370px;
         img {
           width: 100%;
         }
@@ -331,8 +333,9 @@
         height: 143px;
         display: flex;
         position: absolute;
-        top: -47px;
-        left: 150px;
+        top: -49px;
+        left: 50%;
+        margin-left: -550px;
         /*z-index: 200;*/
         .quan {
           width: 350px;
@@ -522,9 +525,9 @@
     }
 
     .hot {
-      width: 100%;
+      width: 1330px;
       height: 455px;
-      margin-bottom: 30px;
+      margin:0 auto 30px;
       display: flex;
       .hot_left {
         width: 579px;

@@ -13,15 +13,15 @@
     <div class="detail">
       <div class="left">
         <div class="tu1">
-          <img :src="img2.url" alt="">
+          <img :src="imgarr[1]" alt="">
         </div>
         <div class="tu2">
-          <img :src="img3.url" alt="">
+          <img :src="imgarr[2]" alt="">
         </div>
       </div>
       <div class="mid">
         <div class="tupian">
-          <img :src="img.url" alt="">
+          <img :src="imgarr[0]" alt="">
         </div>
 
       </div>
@@ -50,13 +50,13 @@
         <div class="rightbot">
           <div class="a">
             <span> 请选择商品数量</span>
-            <button @click="count--">-</button>
+            <button @click="reduce">-</button>
             <div v-model="count"> {{count}}  </div>
             <button @click="count++">+</button>
           </div>
           <div class="b">
             <a class="buycar" @click="addbuycar(data)"> 加入购物车 </a>
-            <a class="buy"> 立即购买 </a>
+            <!--<a class="buy"> 立即购买 </a>-->
           </div>
         </div>
       </div>
@@ -68,7 +68,7 @@
 
 
     <div class="detaila">
-      <img src="../assets/img/111.png" alt="">
+      <img :src="imgarr[3]" alt="">
     </div>
 
 
@@ -77,7 +77,7 @@
     </div>
 
     <div class="detaila">
-      <img src="../assets/img/222.png" alt="">
+      <img :src="imgarr[4]" alt="">
     </div>
 
 
@@ -86,7 +86,7 @@
     </div>
 
     <div class="detaila">
-      <img src="../assets/img/333.png" alt="">
+      <img :src="imgarr[5]" alt="">
     </div>
 
     <div class="img">
@@ -94,54 +94,9 @@
     </div>
 
     <div class="detaila">
-      <img src="../assets/img/444.png" alt="">
-    </div>
-    <div class="iimg">
-      <img src="../assets/img/3_03.png" alt="">
+      <img :src="imgarr[6]" alt="">
     </div>
 
-
-    <ul class="bottom">
-      <li>
-        <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
-        </div>
-        <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
-          <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
-        </div>
-        <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
-          <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
-          </div>
-        </div>
-      </li>
-      <li>
-        <div class="imgtop">
-          <img src="../assets/img/555_11.png" alt="">
-        </div>
-        <div class="imgbot">
-          <span> 奶油腰果</span>
-          <p>双重美味浓醇奶香</p>
-          <div>
-            <div> 66<span>RMB </span></div>
-            <button> BUY</button>
-          </div>
-        </div>
-      </li>
-    </ul>
 
   </div>
 
@@ -153,38 +108,52 @@
       return {
         count: 1,
         data: '',
-        img: {},
-        img2: {},
-        img3: {}
+        imgarr: []
       }
     },
 
     created(){
       let id = this.$route.query.id
       this.$http.get('/api/index/hot/new?id=' + id).then(res => {
+//        console.log(res);
         let aa = res.body [0]
         aa.img = JSON.parse(aa.img)
-        this.img = aa.img[0]
-        this.img2 = aa.img[1]
-        this.img3 = aa.img[2]
         this.data = aa
+
+        let imgarr = []
+        aa.img.forEach(val => {
+          imgarr.push(val.url)
+        })
+//        console.log(imgarr);
+        this.imgarr = imgarr
       })
     },
 
     methods: {
+      reduce(){
+        this.count--
+        if (this.count < 0) {
+          this.count = 0
+        }
+      },
       addbuycar(data){
         if (!localStorage.users) {
           this.$message.error('请先登录')
           return
         }
         let users = JSON.parse(localStorage.users)
-
+        if (this.count == 0) {
+          this.$message({
+            message: '请先选择数量',
+            type: 'warning'
+          });
+          return
+        }
         let obj = {
           name: data.name,
           count: this.count,
           pid: data.id,
           img: data.img[0].url,
-          uid: users.id,
           price: data.price
         }
 
@@ -193,12 +162,12 @@
             "content-type": "application/json"
           }
         }).then(res => {
-          if (res.body=='ok') {
+          if (res.body == 'ok') {
             this.$message({
               message: '添加成功',
               type: 'success'
             });
-          }else{
+          } else {
             this.$message.error('添加失败')
           }
         })
@@ -460,7 +429,7 @@
       margin-bottom: 70px;
     }
     .detaila {
-      height: auto;
+      height: 400px;
       width: 1200px;
       overflow: hidden;
       margin-bottom: 100px;

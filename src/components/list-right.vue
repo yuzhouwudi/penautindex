@@ -220,7 +220,7 @@
 </script>
 <style scoped lang='scss'>
   .big_right {
-    width: 976px;
+    width: 100%;
     height: auto;
     .right_top {
       width: 100%;
@@ -359,7 +359,7 @@
       /*<!--}-->*/
     }
     .none {
-      margin: 50px;
+      margin: 100px;
       font-size: 20px;
       font-weight: 600;
     }

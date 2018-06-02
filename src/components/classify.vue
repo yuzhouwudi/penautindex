@@ -3,8 +3,9 @@
     <div class="top-img">
       <img src="../assets/img/2.png" alt="">
     </div>
-    <div class="size">
-      <p>首页&nbsp;/&nbsp;产品分类</p>
+    <div class="bread">
+      <router-link to="/" class="h1">首页 / </router-link>
+      <span>折扣专区</span>
     </div>
     <div class="content">
       <div class="left">
@@ -12,7 +13,7 @@
           <img src="../assets/img/21.png" alt="">
         </div>
         <ul class="left-content">
-          <span>产品分类 Product classification</span>
+          <li >Product classification</li>
           <li v-for="(item,index) in arr" :key="item.id" @click="show(item.id);active=index"
               :class="{active:index==active}">
             {{item.name}}
@@ -247,14 +248,21 @@
       width: 100%;
       height: auto;
     }
-    .size {
+    .bread {
       width: 100%;
-      height: 75px;
-      p {
+      margin: 0 auto;
+      height: 60px;
+      line-height: 60px;
+      text-align: left;
+      font-weight: 400;
+      .h1 {
+        font-size: 18px;
+        color: #9d9d9d;
+      }
+      span {
         font-size: 16px;
-        padding-top: 20px;
-        text-align: left;
-        color: #737373;
+        color: #bcbcbc;
+        font-weight: 400;
       }
     }
     .content {
